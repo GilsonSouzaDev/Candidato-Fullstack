@@ -37,8 +37,8 @@ public class VagasController : ControllerBase
     [Authorize]
     public async Task<IActionResult> CreateVaga([FromBody] Vaga dto)
     {
-        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userIdStr == null) return Unauthorized();
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.Claims.FirstOrDefault(c => c.Type == "sub" || c.Type == "nameid")?.Value;
+        if (userIdStr == null) return Unauthorized("Usuário não autenticado (Claim não encontrada)");
         
         var userId = long.Parse(userIdStr);
         var vaga = await _fachadaVaga.CriarVaga(dto, userId);
@@ -50,8 +50,8 @@ public class VagasController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetMinhasVagas()
     {
-        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userIdStr == null) return Unauthorized();
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.Claims.FirstOrDefault(c => c.Type == "sub" || c.Type == "nameid")?.Value;
+        if (userIdStr == null) return Unauthorized("Usuário não autenticado (Claim não encontrada)");
 
         var userId = long.Parse(userIdStr);
         var vagas = await _fachadaVaga.ObterMinhasVagas(userId);

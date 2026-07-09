@@ -40,6 +40,7 @@ builder.Services.AddDbContext<CandidatoContext>(opts => {
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddAuthorization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -63,7 +64,11 @@ builder.Services.AddScoped<IFachadaCandidatura, FachadaCandidatura>();
 
 // Authentication JWT
 var jwtKey = builder.Configuration["Jwt:Key"] ?? "GilsonPortfolioSuperSecretKey2026!@#";
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters

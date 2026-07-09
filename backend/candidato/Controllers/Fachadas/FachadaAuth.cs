@@ -42,7 +42,8 @@ namespace candidato.Controllers.Fachadas
                 throw new Exception("Credenciais inválidas");
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"] ?? "uma_chave_super_secreta_para_desenvolvimento_local");
+            var jwtKey = _configuration["Jwt:Key"] ?? "GilsonPortfolioSuperSecretKey2026!@#";
+            var key = Encoding.UTF8.GetBytes(jwtKey);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
