@@ -1,0 +1,57 @@
+<div class="container" style="padding: 40px 0;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+    <div>
+      <h2 class="premium-title" style="margin-bottom: 8px; font-size: 2.2rem;">Dashboard do Recrutador</h2>
+      <p style="margin: 0; color: var(--text-muted);">Gerencie suas vagas e acompanhe os candidatos.</p>
+    </div>
+    <button class="premium-btn"><mat-icon>add</mat-icon> Criar Vaga</button>
+  </div>
+
+  <div class="glass-card" style="padding: 0; overflow: hidden;">
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead style="background: rgba(0,0,0,0.2);">
+          <tr>
+            <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">ID</th>
+            <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">Título da Vaga</th>
+            <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">Status</th>
+            <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">Candidatos</th>
+            <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); text-align: right;">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vaga of vagas" style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
+            <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05);">#{{vaga.id}}</td>
+            <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 500;">{{vaga.titulo}}</td>
+            <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <span [ngStyle]="{
+                'background': vaga.statusAberta ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                'color': vaga.statusAberta ? '#10b981' : '#ef4444',
+                'padding': '4px 12px',
+                'border-radius': '20px',
+                'font-size': '0.8rem',
+                'font-weight': '600'
+              }">
+                {{vaga.statusAberta ? 'Aberta' : 'Fechada'}}
+              </span>
+            </td>
+            <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-muted);">
+              Ver Kanban
+            </td>
+            <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: right;">
+              <a [routerLink]="['/candidaturas', vaga.id]" class="premium-btn secondary" style="padding: 8px 16px; font-size: 0.85rem; text-decoration: none;">
+                <mat-icon style="font-size: 18px; width: 18px; height: 18px;">view_kanban</mat-icon> Pipeline
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div *ngIf="vagas.length === 0" style="padding: 60px 20px; text-align: center;">
+      <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: var(--text-muted); margin-bottom: 16px;">post_add</mat-icon>
+      <h3 style="color: var(--text-main); font-size: 1.3rem; margin-bottom: 8px;">Nenhuma vaga encontrada</h3>
+      <p style="color: var(--text-muted); max-width: 400px; margin: 0 auto;">Você ainda não cadastrou nenhuma vaga. Neste MVP, utilize o Swagger (POST /api/vagas) para publicar vagas enviando seu token JWT.</p>
+    </div>
+  </div>
+</div>

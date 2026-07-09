@@ -1,0 +1,24 @@
+# Node
+node_modules/
+dist/
+tmp/
+out-tsc/
+
+# .NET
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+
+# VS Code / IDE
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# OS
+.DS_Store
+Thumbs.db

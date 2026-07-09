@@ -1,0 +1,54 @@
+<div class="container" style="padding: 40px 0;">
+  <div style="text-align: center; margin-bottom: 48px;">
+    <h1 class="premium-title" style="font-size: 3rem; margin-bottom: 16px;">Vagas em Destaque</h1>
+    <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+      Faça parte de times de alta performance. Encontre a vaga que dará o próximo salto na sua carreira.
+    </p>
+  </div>
+  
+  <div class="glass-card" style="margin: 0 auto 48px auto; max-width: 700px; display: flex; align-items: center; gap: 24px;">
+    <div style="flex: 1;">
+      <label style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Simular ID do Candidato</label>
+      <input type="number" [(ngModel)]="candidatoId" style="width: 100%; box-sizing: border-box;" placeholder="Digite o ID...">
+    </div>
+    <div style="flex: 1; padding-top: 24px;">
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0; line-height: 1.4;">
+        <mat-icon style="vertical-align: middle; font-size: 18px; width: 18px; height: 18px; color: var(--accent-color);">info</mat-icon> 
+        Para aplicar, informe seu ID. Em produção, isso virá do JWT do candidato.
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="msg" class="glass-card" style="margin-bottom: 24px; border-left: 4px solid var(--secondary-color); color: white;">
+    {{msg}}
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px;">
+    <div class="glass-card" *ngFor="let vaga of vagas" style="display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+        <h3 class="premium-title" style="margin: 0; font-size: 1.4rem;">{{vaga.titulo}}</h3>
+        <span style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">R$ {{vaga.salario}}</span>
+      </div>
+      
+      <p style="color: var(--text-main); margin-bottom: 8px; line-height: 1.5;">{{vaga.descricao}}</p>
+      
+      <div style="margin: 16px 0; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Requisitos</p>
+        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-main);">{{vaga.requisitos}}</p>
+      </div>
+      
+      <div style="margin-top: auto; padding-top: 16px; display: flex; align-items: center; justify-content: space-between;">
+        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem;">Publicado por: <span style="color: var(--text-main);">{{vaga.recrutador}}</span></p>
+        <button class="premium-btn" (click)="apply(vaga.id)">Aplicar Agora</button>
+      </div>
+    </div>
+    
+    <div *ngIf="vagas.length === 0" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; text-align: center; margin: 0 auto; max-width: 500px;">
+      <div style="background: rgba(255,255,255,0.03); border-radius: 50%; width: 100px; height: 100px; display: flex; justify-content: center; align-items: center; margin-bottom: 24px;">
+        <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: var(--text-muted);">work_off</mat-icon>
+      </div>
+      <h3 style="color: var(--text-main); font-size: 1.5rem; margin-bottom: 12px; font-family: var(--font-family-title);">Nenhuma vaga aberta no momento</h3>
+      <p style="color: var(--text-muted); line-height: 1.6;">Volte em breve para conferir novas oportunidades incríveis. Nossa equipe adiciona novas vagas frequentemente.</p>
+    </div>
+  </div>
+</div>

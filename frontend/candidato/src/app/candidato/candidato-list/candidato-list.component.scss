@@ -1,0 +1,38 @@
+table {
+  width: 100%;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+.loading-spinner{
+  padding: 25px;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container__cont{
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 678px){
+  table th {
+    font-size: 14px;
+  }
+
+  /* Oculta algumas colunas da tabela */
+  table td:nth-child(2),
+  table th:nth-child(2) {
+    display: none;
+  }
+
+  table td:nth-child(3),
+  table th:nth-child(3) {
+    display: none;
+  }
+}

@@ -1,0 +1,95 @@
+<div class="container" style="padding: 40px 0; max-width: 1000px;">
+  <div style="margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <h2 class="premium-title" style="margin-bottom: 4px; font-size: 2.2rem;">Cadastro de Currículo</h2>
+      <p style="margin: 0; color: var(--text-muted);">Preencha suas informações para participar dos processos seletivos.</p>
+    </div>
+    <button class="premium-btn secondary" routerLink="/vagas"><mat-icon>arrow_back</mat-icon> Voltar</button>
+  </div>
+
+  <form [formGroup]="meuFormulario" (ngSubmit)="enviarFormulario()" class="candidato-form" style="display: flex; flex-direction: column; gap: 24px;">
+
+    <!-- Dados Pessoais -->
+    <div class="glass-card">
+      <h2 class="premium-title" style="font-size: 1.25rem; margin-bottom: 16px;">Dados Pessoais</h2>
+      <div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
+        <div>
+          <label>Nome Completo</label>
+          <input type="text" formControlName="Nome" required placeholder="Ex: Maria Antonieta" style="width: 100%; box-sizing: border-box;">
+          <div *ngIf="Nome?.invalid && (Nome?.dirty || Nome?.touched)" style="color: var(--secondary-color); font-size: 0.8rem; margin-top: 4px;">
+            <span *ngIf="Nome?.errors?.['required']">Nome é obrigatório</span>
+            <span *ngIf="Nome?.errors?.['minlength']">Mínimo de 3 caracteres</span>
+          </div>
+        </div>
+        
+        <div>
+          <label>Data de Nascimento</label>
+          <input type="datetime-local" formControlName="DataNascimento" style="width: 100%; box-sizing: border-box;">
+        </div>
+
+        <div>
+          <label>CPF</label>
+          <input type="text" formControlName="Cpf" required placeholder="000.000.000-00" style="width: 100%; box-sizing: border-box;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Filiação -->
+    <div class="glass-card" formGroupName="Filiacao">
+      <h2 class="premium-title" style="font-size: 1.25rem; margin-bottom: 16px;">Filiação</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div>
+          <label>Nome da Mãe</label>
+          <input type="text" formControlName="NomeMae" placeholder="Obrigatório" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div>
+          <label>Nome do Pai</label>
+          <input type="text" formControlName="NomePai" placeholder="Opcional" style="width: 100%; box-sizing: border-box;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Endereço -->
+    <div class="glass-card" formGroupName="Endereco">
+      <h2 class="premium-title" style="font-size: 1.25rem; margin-bottom: 16px;">Endereço</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div>
+          <label>Logradouro</label>
+          <input type="text" formControlName="Logradouro" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div>
+          <label>Número</label>
+          <input type="text" formControlName="Numero" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div>
+          <label>Bairro</label>
+          <input type="text" formControlName="Bairro" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div>
+          <label>Cidade</label>
+          <input type="text" formControlName="Cidade" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div>
+          <label>Estado</label>
+          <select formControlName="Estado" style="width: 100%; box-sizing: border-box;">
+            <option value="SP" style="color: black">SP</option>
+            <option value="RJ" style="color: black">RJ</option>
+            <option value="MG" style="color: black">MG</option>
+            <!-- adicione os outros estados -->
+          </select>
+        </div>
+        <div>
+          <label>CEP</label>
+          <input type="text" formControlName="Cep" style="width: 100%; box-sizing: border-box;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div style="display: flex; justify-content: flex-end; gap: 16px; margin-top: 16px;">
+      <button type="button" class="premium-btn secondary" routerLink="/candidatos">Cancelar</button>
+      <button type="submit" class="premium-btn" [disabled]="!meuFormulario.valid">Salvar Currículo</button>
+    </div>
+
+  </form>
+</div>
