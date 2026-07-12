@@ -43,5 +43,15 @@ namespace candidato.DataAccess.daos
             await _context.SaveChangesAsync();
             return vaga;
         }
+
+        public async Task<bool> Remover(long id)
+        {
+            var vaga = await ObterPorId(id);
+            if (vaga == null) return false;
+            
+            _context.Vagas.Remove(vaga);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

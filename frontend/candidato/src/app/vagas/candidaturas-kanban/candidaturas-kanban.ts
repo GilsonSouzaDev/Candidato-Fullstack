@@ -42,4 +42,8 @@ export class CandidaturasKanban implements OnInit {
       this.loadData();
     });
   }
+
+  toggleCard(c: any) {
+    c.expanded = !c.expanded;
+  }
 }

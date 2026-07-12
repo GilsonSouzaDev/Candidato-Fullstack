@@ -19,6 +19,9 @@ public class CandidatoContext : DbContext
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Vaga> Vagas { get; set; }
     public DbSet<Candidatura> Candidaturas { get; set; }
+    public DbSet<Habilidade> Habilidades { get; set; }
+    public DbSet<Experiencia> Experiencias { get; set; }
+    public DbSet<Formacao> Formacoes { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new CursoMap());

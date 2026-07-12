@@ -1,18 +1,32 @@
-<header class="glass-header" style="position: sticky; top: 0; z-index: 1000; padding: 16px 32px; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
+<header class="glass-header">
   <div class="logo">
-    <a routerLink="/" style="text-decoration: none; color: white; display: flex; align-items: center; gap: 12px;">
-      <mat-icon style="color: var(--primary-color); font-size: 28px; width: 28px; height: 28px;">work</mat-icon>
-      <span class="premium-title" style="margin: 0; font-size: 1.5rem; background: none; -webkit-text-fill-color: white;">ATS Premium</span>
+    <a routerLink="/" class="logo-link" (click)="closeMenu()">
+      <mat-icon class="logo-icon">work</mat-icon>
+      <span class="premium-title logo-title">ATS Premium</span>
     </a>
   </div>
-  <div class="nav-links" style="display: flex; gap: 24px;">
-    <a routerLink="/vagas" class="nav-item" style="color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-muted)'">Portal de Vagas</a>
-    <a routerLink="/Candidato" class="nav-item" style="color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-muted)'">Meu Currículo</a>
-    <a routerLink="/dashboard" class="nav-item" style="color: var(--primary-color); text-decoration: none; font-weight: 600; border: 1px solid var(--primary-color); padding: 6px 16px; border-radius: 20px; transition: all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='var(--primary-color)';">Área do Recrutador</a>
+
+  <button class="mobile-menu-btn" (click)="toggleMenu()">
+    <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
+  </button>
+
+  <div class="nav-links" [class.menu-open]="isMenuOpen">
+    <a routerLink="/vagas" class="nav-item" (click)="closeMenu()">Portal de Vagas</a>
+
+    <ng-container *ngIf="authService.isLoggedIn | async; else notLogged">
+      <a *ngIf="authService.getUserRole() === 'Admin'" routerLink="/admin" class="nav-item recruiter-btn" (click)="closeMenu()">Painel Admin</a>
+      <a *ngIf="authService.getUserRole() === 'Recrutador'" routerLink="/dashboard" class="nav-item recruiter-btn" (click)="closeMenu()">Área do Recrutador</a>
+      <a *ngIf="authService.getUserRole() === 'Candidato'" routerLink="/candidato" class="nav-item recruiter-btn" (click)="closeMenu()">Meu Currículo</a>
+      <a (click)="logout()" class="nav-item logout-btn" style="cursor: pointer;">Sair</a>
+    </ng-container>
+    
+    <ng-template #notLogged>
+      <a routerLink="/login" class="nav-item login-btn" (click)="closeMenu()">Entrar</a>
+    </ng-template>
   </div>
 </header>
-<main style="padding: 40px 24px; display: flex; flex-direction: column; align-items: center; min-height: calc(100vh - 80px); box-sizing: border-box;">
-  <div style="width: 100%; max-width: 1200px;">
+<main class="main-content">
+  <div class="content-wrapper">
     <router-outlet></router-outlet>
   </div>
 </main>

@@ -6,7 +6,9 @@
     "start": "ng serve --proxy-config proxy.conf.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:e2e:export": "npx playwright test --project=chromium && powershell -ExecutionPolicy Bypass -File tests/scripts/export-videos.ps1",
+    "test:e2e": "npx playwright test"
   },
   "private": true,
   "dependencies": {
@@ -20,6 +22,7 @@
     "@angular/platform-browser": "^15.2.0",
     "@angular/platform-browser-dynamic": "^15.2.0",
     "@angular/router": "^15.2.0",
+    "jwt-decode": "^4.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
@@ -28,7 +31,9 @@
     "@angular-devkit/build-angular": "^15.2.2",
     "@angular/cli": "~15.2.2",
     "@angular/compiler-cli": "^15.2.0",
+    "@playwright/test": "^1.61.1",
     "@types/jasmine": "~4.3.0",
+    "@types/node": "^26.1.1",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

@@ -1,57 +1,106 @@
-<div class="container" style="padding: 40px 0;">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+<div class="container dashboard-container">
+  <div class="dashboard-header">
     <div>
-      <h2 class="premium-title" style="margin-bottom: 8px; font-size: 2.2rem;">Dashboard do Recrutador</h2>
-      <p style="margin: 0; color: var(--text-muted);">Gerencie suas vagas e acompanhe os candidatos.</p>
+      <h2 class="premium-title page-title">Dashboard do Recrutador</h2>
+      <p class="page-subtitle">Gerencie suas vagas e acompanhe os candidatos.</p>
     </div>
-    <button class="premium-btn"><mat-icon>add</mat-icon> Criar Vaga</button>
+    <button class="premium-btn" (click)="openModal()"><mat-icon>add</mat-icon> Criar Vaga</button>
   </div>
 
-  <div class="glass-card" style="padding: 0; overflow: hidden;">
-    <div style="overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; text-align: left;">
-        <thead style="background: rgba(0,0,0,0.2);">
+  <div class="glass-card table-card">
+    <div class="table-responsive">
+      <table class="premium-table">
+        <thead>
           <tr>
-            <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">ID</th>
-            <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">Título da Vaga</th>
-            <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">Status</th>
-            <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">Candidatos</th>
-            <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); text-align: right;">Ações</th>
+            <th>ID</th>
+            <th>Título da Vaga</th>
+            <th>Status</th>
+            <th class="hide-on-mobile">Candidatos</th>
+            <th class="text-right hide-on-mobile">Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let vaga of vagas" style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
-            <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05);">#{{vaga.id}}</td>
-            <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 500;">{{vaga.titulo}}</td>
-            <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-              <span [ngStyle]="{
-                'background': vaga.statusAberta ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                'color': vaga.statusAberta ? '#10b981' : '#ef4444',
-                'padding': '4px 12px',
-                'border-radius': '20px',
-                'font-size': '0.8rem',
-                'font-weight': '600'
-              }">
+          <tr *ngFor="let vaga of vagas" class="table-row" (click)="goToPipeline(vaga.id)">
+            <td class="col-id">#{{vaga.id}}</td>
+            <td class="col-main">{{vaga.titulo}}</td>
+            <td>
+              <span class="status-badge" [ngClass]="vaga.statusAberta ? 'status-open' : 'status-closed'">
                 {{vaga.statusAberta ? 'Aberta' : 'Fechada'}}
               </span>
             </td>
-            <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-muted);">
+            <td class="col-muted hide-on-mobile">
               Ver Kanban
             </td>
-            <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: right;">
-              <a [routerLink]="['/candidaturas', vaga.id]" class="premium-btn secondary" style="padding: 8px 16px; font-size: 0.85rem; text-decoration: none;">
-                <mat-icon style="font-size: 18px; width: 18px; height: 18px;">view_kanban</mat-icon> Pipeline
-              </a>
+            <td class="text-right hide-on-mobile">
+              <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                <a [routerLink]="['/candidaturas', vaga.id]" class="premium-btn secondary action-link" title="Ver Pipeline">
+                  <mat-icon>view_kanban</mat-icon> Pipeline
+                </a>
+                <button type="button" class="premium-btn secondary action-link" style="color: var(--custom-app-warn); border-color: rgba(239, 68, 68, 0.3);" title="Excluir Vaga" (click)="deletarVaga(vaga.id); $event.stopPropagation()">
+                  <mat-icon>delete</mat-icon> Excluir
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
     
-    <div *ngIf="vagas.length === 0" style="padding: 60px 20px; text-align: center;">
-      <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: var(--text-muted); margin-bottom: 16px;">post_add</mat-icon>
-      <h3 style="color: var(--text-main); font-size: 1.3rem; margin-bottom: 8px;">Nenhuma vaga encontrada</h3>
-      <p style="color: var(--text-muted); max-width: 400px; margin: 0 auto;">Você ainda não cadastrou nenhuma vaga. Neste MVP, utilize o Swagger (POST /api/vagas) para publicar vagas enviando seu token JWT.</p>
+    <div *ngIf="vagas.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">post_add</mat-icon>
+      <h3>Nenhuma vaga encontrada</h3>
+      <p class="empty-desc">Você ainda não cadastrou nenhuma vaga. Clique em "Criar Vaga" para começar.</p>
+    </div>
+  </div>
+
+  <!-- Modal Criar Vaga -->
+  <div class="modal-overlay" *ngIf="showModal">
+    <div class="glass-card modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2 class="premium-title section-title" style="margin: 0;">Criar Nova Vaga</h2>
+        <button type="button" class="action-btn danger" (click)="closeModal()" style="padding: 4px; border-radius: 50%;"><mat-icon>close</mat-icon></button>
+      </div>
+
+      <form (ngSubmit)="salvarVaga()">
+        <div style="display: grid; gap: 16px;">
+          <div>
+            <label for="titulo">Título da Vaga</label>
+            <input type="text" id="titulo" [(ngModel)]="novaVaga.titulo" name="titulo" required placeholder="Ex: Desenvolvedor Senior" class="form-input">
+          </div>
+          <div>
+            <label for="nomeEmpresa">Nome da Empresa</label>
+            <input type="text" id="nomeEmpresa" [(ngModel)]="novaVaga.nomeEmpresa" name="nomeEmpresa" required placeholder="Sua empresa" class="form-input">
+          </div>
+          <div>
+            <label for="descricao">Descrição (Visão Geral)</label>
+            <textarea id="descricao" [(ngModel)]="novaVaga.descricao" name="descricao" required placeholder="Fale um pouco sobre a vaga e a cultura da empresa..." class="form-input" style="min-height: 80px; resize: vertical;"></textarea>
+          </div>
+          <div>
+            <label for="atividades">Atividades</label>
+            <textarea id="atividades" [(ngModel)]="novaVaga.atividades" name="atividades" placeholder="Um item por linha" class="form-input" style="min-height: 80px; resize: vertical;"></textarea>
+          </div>
+          <div>
+            <label for="requisitosObrigatorios">Requisitos Obrigatórios</label>
+            <textarea id="requisitosObrigatorios" [(ngModel)]="novaVaga.requisitosObrigatorios" name="requisitosObrigatorios" placeholder="Um item por linha" class="form-input" style="min-height: 80px; resize: vertical;"></textarea>
+          </div>
+          <div>
+            <label for="requisitosDesejaveis">Requisitos Desejáveis (Diferenciais)</label>
+            <textarea id="requisitosDesejaveis" [(ngModel)]="novaVaga.requisitosDesejaveis" name="requisitosDesejaveis" placeholder="Um item por linha" class="form-input" style="min-height: 80px; resize: vertical;"></textarea>
+          </div>
+          <div>
+            <label for="beneficios">Benefícios</label>
+            <textarea id="beneficios" [(ngModel)]="novaVaga.beneficios" name="beneficios" placeholder="Um item por linha" class="form-input" style="min-height: 80px; resize: vertical;"></textarea>
+          </div>
+          <div>
+            <label for="salario">Salário Base (R$)</label>
+            <input type="number" id="salario" [(ngModel)]="novaVaga.salario" name="salario" placeholder="Ex: 8000" class="form-input">
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 16px; margin-top: 16px;">
+            <button type="button" class="premium-btn secondary" (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="premium-btn" [disabled]="!novaVaga.titulo || !novaVaga.descricao">Salvar Vaga</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

@@ -17,24 +17,24 @@ namespace candidato.Controllers.Fachadas
             _candidatoDao = candidatoDao;
         }
 
-        public async Task Aplicar(CandidaturaDto dto)
+        public async Task Aplicar(CandidaturaDto dto, long userId)
         {
             var vaga = await _vagaDao.ObterPorId(dto.VagaId);
             if (vaga == null || !vaga.StatusAberta)
                 throw new Exception("Vaga não encontrada ou fechada.");
 
-            var candidato = await _candidatoDao.ObterPorId(dto.CandidatoId);
+            var candidato = await _candidatoDao.ObterPorUsuarioId(userId);
             if (candidato == null)
-                throw new Exception("Candidato não encontrado. Registre-se primeiro.");
+                throw new Exception("Candidato não encontrado. Registre seu currículo primeiro.");
 
-            var exists = await _candidaturaDao.VerificarExistencia(dto.VagaId, dto.CandidatoId);
+            var exists = await _candidaturaDao.VerificarExistencia(dto.VagaId, candidato.Id);
             if (exists)
                 throw new Exception("Você já se candidatou para esta vaga.");
 
             var candidatura = new Candidatura
             {
                 VagaId = dto.VagaId,
-                CandidatoId = dto.CandidatoId,
+                CandidatoId = candidato.Id,
                 StatusCandidatura = "Triagem"
             };
 
@@ -53,9 +53,19 @@ namespace candidato.Controllers.Fachadas
                 c.Id,
                 c.StatusCandidatura,
                 c.DataAplicacao,
+                CandidatoId = c.CandidatoId,
                 CandidatoNome = c.Candidato?.Nome ?? "Desconhecido",
-                CandidatoEmail = "nao-informado@teste.com"
+                CandidatoEmail = c.Candidato?.Usuario?.Email ?? "nao-informado@teste.com"
             }).ToList();
+        }
+
+        public async Task<List<long>> ObterMinhasInscricoes(long userId)
+        {
+            var candidato = await _candidatoDao.ObterPorUsuarioId(userId);
+            if (candidato == null) return new List<long>();
+
+            var candidaturas = await _candidaturaDao.ObterPorCandidato(candidato.Id);
+            return candidaturas.Select(c => c.VagaId).ToList();
         }
 
         public async Task AtualizarStatus(long candidaturaId, string novoStatus, long recrutadorId)
@@ -66,6 +76,17 @@ namespace candidato.Controllers.Fachadas
 
             candidatura.StatusCandidatura = novoStatus;
             await _candidaturaDao.Atualizar(candidatura);
+        }
+
+        public async Task Cancelar(long vagaId, long userId)
+        {
+            var candidato = await _candidatoDao.ObterPorUsuarioId(userId);
+            if (candidato == null) throw new Exception("Candidato não encontrado.");
+
+            var exists = await _candidaturaDao.VerificarExistencia(vagaId, candidato.Id);
+            if (!exists) throw new Exception("Inscrição não encontrada.");
+
+            await _candidaturaDao.Deletar(vagaId, candidato.Id);
         }
     }
 }

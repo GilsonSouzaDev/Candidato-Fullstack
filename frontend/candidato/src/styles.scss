@@ -1,29 +1,43 @@
-@import '@angular/material/theming';
-@include mat-core();
+@use '@angular/material' as mat;
+@include mat.core();
 
-$custom-app-primary: mat-palette($mat-blue);
-$custom-app-secondary: mat-palette($mat-indigo, A200, A400, 700);
-$custom-app-warn: mat-palette($mat-red);
-$custom-theme: mat-light-theme($custom-app-primary, $custom-app-secondary, $custom-app-warn);
-@include angular-material-theme($custom-theme);
+$custom-app-primary: mat.define-palette(mat.$indigo-palette);
+$custom-app-secondary: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$custom-app-warn: mat.define-palette(mat.$red-palette);
+
+$custom-theme: mat.define-light-theme((
+  color: (
+    primary: $custom-app-primary,
+    accent: $custom-app-secondary,
+    warn: $custom-app-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+@include mat.all-component-themes($custom-theme);
 
 // --- PREMIUM DARK ATS THEME ---
 :root {
-  --primary-color: #6366f1; /* Indigo 500 */
-  --primary-hover: #4f46e5; /* Indigo 600 */
-  --secondary-color: #ec4899; /* Pink 500 */
-  --accent-color: #38bdf8; /* Light Blue 400 */
+  --primary-color: #f97316; /* Orange 500 */
+  --primary-hover: #ea580c; /* Orange 600 */
+  --secondary-color: #f8fafc; /* White for secondary accents */
+  --accent-color: #fb923c; /* Orange 400 */
   
-  --bg-dark: #0f172a; /* Slate 900 */
+  --bg-dark: #121214; /* Darker Slate/Black */
   --text-main: #f8fafc; /* Slate 50 */
-  --text-muted: #94a3b8; /* Slate 400 */
+  --text-muted: #a1a1aa; /* Zinc 400 */
   
-  --glass-bg: rgba(30, 41, 59, 0.6); /* Slate 800 semi-transparent */
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(30, 30, 35, 0.7); /* Dark gray cards */
+  --glass-border: rgba(255, 255, 255, 0.05);
   --glass-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
   
   --font-family-main: 'Inter', sans-serif;
   --font-family-title: 'Outfit', sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 html, body { 
@@ -32,8 +46,8 @@ html, body {
   font-family: var(--font-family-main);
   background-color: var(--bg-dark);
   background-image: 
-    radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.15), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15), transparent 25%);
+    radial-gradient(circle at 15% 50%, rgba(249, 115, 22, 0.05), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(249, 115, 22, 0.03), transparent 25%);
   background-attachment: fixed;
   color: var(--text-main);
 }
@@ -47,8 +61,8 @@ html, body {
 // --- GLOBAL UTILITIES ---
 .glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   border-radius: 16px;
@@ -61,17 +75,17 @@ html, body {
 }
 
 .premium-btn {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  background: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 12px 24px;
   font-family: var(--font-family-main);
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  box-shadow: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -118,11 +132,11 @@ html, body {
 
 // Input styles for dark theme
 input, select, textarea {
-  background: rgba(15, 23, 42, 0.5) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: var(--text-main) !important;
-  border-radius: 8px !important;
-  padding: 12px 16px !important;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  border-radius: 8px;
+  padding: 12px 16px;
   font-family: var(--font-family-main);
   transition: all 0.3s ease;
   
@@ -144,3 +158,51 @@ label {
   margin: 0 auto;
   padding: 0 24px;
 }
+
+@media (max-width: 768px) {
+  .glass-card {
+    padding: 16px;
+  }
+  .container {
+    padding: 0 16px;
+  }
+}
+
+// --- AUTOCOMPLETE OVERRIDES ---
+.mat-mdc-autocomplete-panel, .mat-autocomplete-panel {
+  background: rgba(30, 30, 35, 0.95) !important;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  color: var(--text-main) !important;
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.8) !important;
+}
+.mat-mdc-option, .mat-option, 
+.mat-mdc-option .mdc-list-item__primary-text, 
+.mat-option-text {
+  color: var(--text-main) !important;
+  font-family: var(--font-family-main) !important;
+}
+.mat-mdc-option:hover, .mat-option:hover, .mat-mdc-option.mdc-list-item--selected, .mat-option.mat-selected {
+  background: rgba(249, 115, 22, 0.2) !important;
+}
+
+.form-input { width: 100%; box-sizing: border-box; }
+
+
+
+// --- DIALOG OVERRIDES ---
+.mdc-dialog__surface, .mat-mdc-dialog-surface, .mat-dialog-container {
+  background: var(--glass-bg) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-main) !important;
+  box-shadow: var(--glass-shadow) !important;
+  border-radius: 16px !important;
+}
+.mat-mdc-dialog-title, .mat-dialog-title {
+  color: var(--text-main) !important;
+}
+

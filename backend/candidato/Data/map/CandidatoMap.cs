@@ -1,4 +1,4 @@
-﻿using candidatos.Models;
+using candidatos.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -35,9 +35,28 @@ namespace candidato.Data.map
                            .OnDelete(DeleteBehavior.Cascade);
 
                     builder.HasMany(x => x.Cursos)      
-                           .WithOne()
+                           .WithOne(c => c.Candidato)
+                           .HasForeignKey(c => c.CandidatoId)
                            .OnDelete(DeleteBehavior.Cascade);
 
+                    builder.HasMany(x => x.Formacoes)
+                           .WithOne(f => f.Candidato)
+                           .HasForeignKey(f => f.CandidatoId)
+                           .OnDelete(DeleteBehavior.Cascade);
+                    builder.HasMany(x => x.Habilidades)
+                           .WithOne(h => h.Candidato)
+                           .HasForeignKey(h => h.CandidatoId)
+                           .OnDelete(DeleteBehavior.Cascade);
+
+                    builder.HasMany(x => x.Experiencias)
+                           .WithOne(e => e.Candidato)
+                           .HasForeignKey(e => e.CandidatoId)
+                           .OnDelete(DeleteBehavior.Cascade);
+
+                    builder.HasOne(x => x.Usuario)
+                           .WithOne(u => u.CandidatoPerfil)
+                           .HasForeignKey<Candidato>(c => c.UsuarioId)
+                           .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

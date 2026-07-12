@@ -11,7 +11,7 @@ import { Candidato } from '../models/Candidato';
 })
 export class CandidatosService {
 
-  private readonly API = 'https://api-candidato-fake.vercel.app/Candidato';
+  private readonly API = '/api/candidato';
   http: any;
 
   constructor( private httpClient: HttpClient) { }
@@ -24,8 +24,12 @@ export class CandidatosService {
     );
   }
 
+  getMeuPerfil(): Observable<Candidato> {
+    return this.httpClient.get<Candidato>(`${this.API}/meu-perfil`).pipe(first());
+  }
+
   display(id: number){
-      return this.httpClient.get<Candidato>(`${this.API}/${id}`)
+      return this.httpClient.get<Candidato>(`${this.API}/display/${id}`)
       .pipe(
         first(),
         tap(candidatos => console.log(candidatos))
@@ -35,7 +39,7 @@ export class CandidatosService {
 
 
   edit(candidato: Candidato, id: number): Observable<Candidato> {
-    const url = `${this.API}/${id}`;
+    const url = `${this.API}/edit/${id}`;
     return this.httpClient.put<Candidato>(url, candidato).
     pipe(
       tap(updatedCandidato => console.log(`Candidato atualizado: ${updatedCandidato.id}`))

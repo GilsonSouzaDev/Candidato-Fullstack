@@ -24,16 +24,31 @@ namespace candidato.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("CandidatoId");
 
+                    b.Property<string>("Cpf")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DataNascimento")
+                        .HasColumnType("TEXT");
+
                     b.Property<long>("EnderecoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<long>("FiliacaoId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("LinkedInUrl")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("VARCHAR");
+
+                    b.Property<string>("ResumoProfissional")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("UsuarioId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -41,6 +56,9 @@ namespace candidato.Migrations
                         .IsUnique();
 
                     b.HasIndex("FiliacaoId")
+                        .IsUnique();
+
+                    b.HasIndex("UsuarioId")
                         .IsUnique();
 
                     b.ToTable("Candidatos");
@@ -104,13 +122,22 @@ namespace candidato.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("CursoId");
 
-                    b.Property<long?>("CandidatoId")
+                    b.Property<int?>("AnoConclusao")
                         .HasColumnType("INTEGER");
+
+                    b.Property<long>("CandidatoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Instituicao")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("VARCHAR");
+
+                    b.Property<int?>("TotalHoras")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -125,6 +152,9 @@ namespace candidato.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasColumnName("EnderecoId");
+
+                    b.Property<string>("Bairro")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Cep")
                         .IsRequired()
@@ -174,6 +204,37 @@ namespace candidato.Migrations
                     b.ToTable("Estados");
                 });
 
+            modelBuilder.Entity("candidatos.Models.Experiencia", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("CandidatoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Cargo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DataFim")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DataInicio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Empresa")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidatoId");
+
+                    b.ToTable("Experiencias");
+                });
+
             modelBuilder.Entity("candidatos.Models.Filiacao", b =>
                 {
                     b.Property<long>("Id")
@@ -193,6 +254,63 @@ namespace candidato.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Filiacoes");
+                });
+
+            modelBuilder.Entity("candidatos.Models.Formacao", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("CandidatoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DataFim")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DataInicio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Instituicao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidatoId");
+
+                    b.ToTable("Formacoes");
+                });
+
+            modelBuilder.Entity("candidatos.Models.Habilidade", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("CandidatoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nivel")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tipo")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidatoId");
+
+                    b.ToTable("Habilidades");
                 });
 
             modelBuilder.Entity("candidatos.Models.Telefone", b =>
@@ -254,6 +372,14 @@ namespace candidato.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Atividades")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Beneficios")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<long>("CriadoPorId")
                         .HasColumnType("INTEGER");
 
@@ -264,7 +390,19 @@ namespace candidato.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("NomeEmpresa")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Requisitos")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RequisitosDesejaveis")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RequisitosObrigatorios")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -299,9 +437,17 @@ namespace candidato.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("candidatos.Models.Usuario", "Usuario")
+                        .WithOne("CandidatoPerfil")
+                        .HasForeignKey("candidatos.Models.Candidato", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Endereco");
 
                     b.Navigation("Filiacao");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("candidatos.Models.Candidatura", b =>
@@ -336,10 +482,13 @@ namespace candidato.Migrations
 
             modelBuilder.Entity("candidatos.Models.Curso", b =>
                 {
-                    b.HasOne("candidatos.Models.Candidato", null)
+                    b.HasOne("candidatos.Models.Candidato", "Candidato")
                         .WithMany("Cursos")
                         .HasForeignKey("CandidatoId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Candidato");
                 });
 
             modelBuilder.Entity("candidatos.Models.Endereco", b =>
@@ -351,6 +500,39 @@ namespace candidato.Migrations
                         .IsRequired();
 
                     b.Navigation("Cidade");
+                });
+
+            modelBuilder.Entity("candidatos.Models.Experiencia", b =>
+                {
+                    b.HasOne("candidatos.Models.Candidato", "Candidato")
+                        .WithMany("Experiencias")
+                        .HasForeignKey("CandidatoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Candidato");
+                });
+
+            modelBuilder.Entity("candidatos.Models.Formacao", b =>
+                {
+                    b.HasOne("candidatos.Models.Candidato", "Candidato")
+                        .WithMany("Formacoes")
+                        .HasForeignKey("CandidatoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Candidato");
+                });
+
+            modelBuilder.Entity("candidatos.Models.Habilidade", b =>
+                {
+                    b.HasOne("candidatos.Models.Candidato", "Candidato")
+                        .WithMany("Habilidades")
+                        .HasForeignKey("CandidatoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Candidato");
                 });
 
             modelBuilder.Entity("candidatos.Models.Telefone", b =>
@@ -378,11 +560,19 @@ namespace candidato.Migrations
 
                     b.Navigation("Cursos");
 
+                    b.Navigation("Experiencias");
+
+                    b.Navigation("Formacoes");
+
+                    b.Navigation("Habilidades");
+
                     b.Navigation("Telefones");
                 });
 
             modelBuilder.Entity("candidatos.Models.Usuario", b =>
                 {
+                    b.Navigation("CandidatoPerfil");
+
                     b.Navigation("VagasCriadas");
                 });
 

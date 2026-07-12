@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class VagasService {
-  private apiUrl = 'https://localhost:7198/api/vagas';
+  private apiUrl = '/api/vagas';
 
   constructor(private http: HttpClient) { }
 
@@ -24,5 +24,9 @@ export class VagasService {
 
   createVaga(data: any): Observable<any> {
     return this.http.post(this.apiUrl, data);
+  }
+
+  deleteVaga(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

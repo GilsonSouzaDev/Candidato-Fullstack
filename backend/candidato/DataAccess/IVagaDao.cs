@@ -8,5 +8,6 @@ namespace candidato.DataAccess
         Task<List<Vaga>> ObterPorRecrutador(long recrutadorId);
         Task<Vaga?> ObterPorId(long id);
         Task<Vaga> Adicionar(Vaga vaga);
+        Task<bool> Remover(long id);
     }
 }

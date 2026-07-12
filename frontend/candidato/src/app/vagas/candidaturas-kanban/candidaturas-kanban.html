@@ -1,55 +1,61 @@
-<div class="container" style="padding: 40px 0; max-width: 1600px;">
-  <div style="margin-bottom: 32px; display: flex; align-items: center; gap: 16px;">
-    <a routerLink="/dashboard" class="premium-btn secondary" style="padding: 8px; border-radius: 50%;"><mat-icon>arrow_back</mat-icon></a>
+<div class="kanban-container">
+  <div class="kanban-header">
+    <a routerLink="/dashboard" class="premium-btn secondary back-btn"><mat-icon>arrow_back</mat-icon></a>
     <div>
-      <h2 class="premium-title" style="margin-bottom: 4px; font-size: 2rem;">Pipeline de Candidaturas</h2>
-      <p style="margin: 0; color: var(--text-muted);">Acompanhamento da vaga #{{vagaId}}</p>
+      <div class="kanban-title-row">
+        <!-- In a real scenario, this would be {{ vaga.titulo }} -->
+        <h2 class="premium-title kanban-title">Desenvolvedor(a) Full Stack Pleno</h2>
+        <span class="kanban-status">Vaga ativa</span>
+      </div>
+      <!-- In a real scenario, this would sum the array lengths -->
+      <p class="kanban-subtitle">27 candidaturas ativas</p>
     </div>
   </div>
 
-  <div style="display: flex; gap: 24px; overflow-x: auto; padding-bottom: 24px; min-height: 70vh; align-items: flex-start;">
+  <div class="kanban-board">
     
-    <div *ngFor="let coluna of colunas" 
-         class="glass-card" 
-         style="flex: 0 0 320px; padding: 16px; background: rgba(15, 23, 42, 0.4); border-top: 4px solid var(--primary-color);">
+    <div *ngFor="let coluna of colunas" class="kanban-column">
       
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="margin: 0; color: var(--text-main); font-size: 1.1rem; font-weight: 600;">{{coluna}}</h3>
-        <span style="background: rgba(99, 102, 241, 0.2); color: var(--accent-color); border-radius: 20px; padding: 4px 10px; font-size: 0.8rem; font-weight: 700;">
+      <div class="kanban-column-header">
+        <h3>{{coluna}}</h3>
+        <span class="kanban-count">
           {{getCandidaturasPorStatus(coluna).length}}
         </span>
       </div>
       
-      <div *ngFor="let c of getCandidaturasPorStatus(coluna)" 
-           class="glass-card" 
-           style="padding: 16px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05); background: rgba(30, 41, 59, 0.8);">
+      <div *ngFor="let c of getCandidaturasPorStatus(coluna)" class="glass-card kanban-card">
         
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-          <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.2rem;">
-            {{c.candidatoNome.charAt(0).toUpperCase()}}
-          </div>
+        <div class="card-header" (click)="toggleCard(c)">
           <div>
-            <p style="margin: 0; font-weight: 600; font-size: 1rem;">{{c.candidatoNome}}</p>
-            <p style="margin: 0; color: var(--text-muted); font-size: 0.8rem;">{{c.candidatoEmail}}</p>
+            <p class="card-name">{{c.candidatoNome}}</p>
+            <p class="card-email" *ngIf="c.expanded">{{c.candidatoEmail}}</p>
+          </div>
+          <div class="card-header-right">
+            <div class="card-avatar">
+              {{c.candidatoNome.charAt(0).toUpperCase()}}
+            </div>
+            <mat-icon class="expand-icon" [ngClass]="{'expanded': c.expanded}">expand_more</mat-icon>
           </div>
         </div>
 
-        <p style="margin: 0 0 16px 0; color: var(--text-muted); font-size: 0.8rem; display: flex; align-items: center; gap: 4px;">
-          <mat-icon style="font-size: 14px; width: 14px; height: 14px;">calendar_today</mat-icon> 
-          Aplicado em: {{c.dataAplicacao | date:'shortDate'}}
-        </p>
-        
-        <div style="padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05);">
-          <label style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Avançar Pipeline:</label>
-          <select #statusSelect (change)="updateStatus(c.id, statusSelect.value)" style="width: 100%; margin-top: 8px; font-size: 0.85rem; padding: 8px 12px !important; cursor: pointer;">
-            <option *ngFor="let opt of colunas" [value]="opt" [selected]="opt === c.statusCandidatura" style="background: var(--bg-dark); color: white;">
-              {{opt}}
-            </option>
-          </select>
+        <div class="card-body" *ngIf="c.expanded">
+          <p class="card-date">
+            <mat-icon>calendar_today</mat-icon> 
+            Aplicado em: {{c.dataAplicacao | date:'shortDate'}}
+          </p>
+          
+          <div class="card-actions">
+            <select #statusSelect (change)="updateStatus(c.id, statusSelect.value)" class="kanban-select" (click)="$event.stopPropagation()">
+              <option *ngFor="let opt of colunas" [value]="opt" [selected]="opt === c.statusCandidatura" class="kanban-option">
+                Mover para: {{opt}}
+              </option>
+            </select>
+            <a [routerLink]="['/candidato/display', c.candidatoId]" class="premium-btn secondary kanban-detail-btn" (click)="$event.stopPropagation()">Ver Detalhes</a>
+          </div>
         </div>
       </div>
       
-      <div *ngIf="getCandidaturasPorStatus(coluna).length === 0" style="padding: 24px 0; text-align: center; color: rgba(255,255,255,0.2); font-style: italic; border: 2px dashed rgba(255,255,255,0.05); border-radius: 8px;">
+      <div *ngIf="getCandidaturasPorStatus(coluna).length === 0" class="kanban-empty-col">
         Vazio
       </div>
 

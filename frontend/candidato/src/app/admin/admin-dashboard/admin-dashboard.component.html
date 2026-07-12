@@ -1,0 +1,35 @@
+<div class="container" style="padding-top: 40px; max-width: 600px;">
+  <div class="glass-card">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+      <mat-icon style="font-size: 40px; height: 40px; width: 40px; color: var(--accent-color);">admin_panel_settings</mat-icon>
+      <div>
+        <h2 class="premium-title" style="margin-bottom: 4px;">Painel Admin</h2>
+        <p style="color: var(--text-muted); margin: 0;">Cadastre novos Recrutadores no sistema ATS.</p>
+      </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+      <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+        <div>
+          <label>Nome do Recrutador</label>
+          <input type="text" [(ngModel)]="nome" name="nome" required placeholder="João Recrutador" class="form-input">
+        </div>
+        <div>
+          <label>E-mail Corporativo</label>
+          <input type="email" [(ngModel)]="email" name="email" required placeholder="joao@empresa.com" class="form-input">
+        </div>
+        <div>
+          <label>Senha Provisória</label>
+          <input type="password" [(ngModel)]="senha" name="senha" required placeholder="Mínimo 8 caracteres" class="form-input">
+        </div>
+      </div>
+      
+      <div *ngIf="msg" class="glass-card" [ngClass]="{'success-msg': !isError, 'error-msg': isError}" style="margin-bottom: 24px; padding: 16px;">
+        <mat-icon style="vertical-align: middle;">{{ isError ? 'error_outline' : 'check_circle' }}</mat-icon>
+        {{msg}}
+      </div>
+      
+      <button type="submit" class="premium-btn" style="width: 100%;">Cadastrar Recrutador</button>
+    </form>
+  </div>
+</div>

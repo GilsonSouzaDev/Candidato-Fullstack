@@ -29,6 +29,22 @@ namespace candidato.Controllers.Fachadas
                 Nome = dto.Nome,
                 Email = dto.Email,
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword(dto.Senha),
+                Role = "Candidato"
+            };
+
+            return await _usuarioDao.Adicionar(user);
+        }
+
+        public async Task<Usuario> RegistrarRecrutador(RegisterDto dto)
+        {
+            if (await _usuarioDao.ObterPorEmail(dto.Email) != null)
+                throw new Exception("Usuário já existe");
+
+            var user = new Usuario
+            {
+                Nome = string.IsNullOrWhiteSpace(dto.Nome) ? "Recrutador Padrão" : dto.Nome,
+                Email = dto.Email,
+                SenhaHash = BCrypt.Net.BCrypt.HashPassword(dto.Senha),
                 Role = "Recrutador"
             };
 

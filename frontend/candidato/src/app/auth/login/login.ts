@@ -3,11 +3,12 @@ import { AuthService } from '../../core/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, MatIconModule],
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
 })
@@ -20,8 +21,17 @@ export class Login {
 
   onSubmit() {
     this.authService.login({ email: this.email, senha: this.senha }).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
-      error: (err) => this.error = err.error?.Error || 'Erro no login'
+      next: () => {
+        const role = this.authService.getUserRole();
+        if (role === 'Candidato') {
+          this.router.navigate(['/vagas']);
+        } else if (role === 'Admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
+      },
+      error: (err) => this.error = err.error?.error || err.error?.Error || err.error?.message || 'Erro no login: Credenciais inválidas.'
     });
   }
 }

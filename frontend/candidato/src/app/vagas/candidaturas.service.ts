@@ -6,12 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CandidaturasService {
-  private apiUrl = 'https://localhost:7198/api/candidaturas';
+  private apiUrl = '/api/candidaturas';
 
   constructor(private http: HttpClient) { }
 
-  apply(vagaId: number, candidatoId: number): Observable<any> {
-    return this.http.post(this.apiUrl, { vagaId, candidatoId });
+  apply(vagaId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/aplicar`, { vagaId });
   }
 
   getCandidaturas(vagaId: number): Observable<any[]> {
@@ -20,5 +20,13 @@ export class CandidaturasService {
 
   updateStatus(id: number, status: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}/status`, { status });
+  }
+
+  getMinhasInscricoes(): Observable<number[]> {
+    return this.http.get<number[]>(`${this.apiUrl}/minhas`);
+  }
+
+  cancel(vagaId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/vaga/${vagaId}`);
   }
 }

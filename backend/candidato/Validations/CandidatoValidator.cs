@@ -12,6 +12,9 @@ public class CandidatoValidator : AbstractValidator<Candidato>
             .MinimumLength(5).WithMessage("O campo candidato deve ter no mínimo 5 caracteres.")
             .MaximumLength(150).WithMessage("O campo candidato deve ter no máximo 150 caracteres.");
 
+        RuleFor(c => c.Cpf).NotEmpty().WithMessage("O CPF é obrigatório.");
+        RuleFor(c => c.DataNascimento).NotNull().WithMessage("A Data de Nascimento é obrigatória.");
+
         RuleFor(c => c.Filiacao).NotNull().WithMessage("A filiação é obrigatória.");
         
         When(c => c.Filiacao != null, () =>

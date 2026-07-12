@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { AuthService } from 'src/app/core/auth.service';
 
 import { Candidato } from '../models/Candidato';
 import { CandidatosService } from '../services/candidatos.service';
@@ -18,15 +20,19 @@ export class CandidatoDisplayComponent implements OnInit {
 
   candidatos$: Observable<Candidato>;
   id: number;
+  isCandidato: boolean = false;
 
   constructor(
     private candidatoService: CandidatosService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService,
+    private location: Location
   ) {
 
+    this.isCandidato = this.authService.getUserRole() === 'Candidato';
     this.id = this.route.snapshot.params['id']
 
     this.candidatos$ = this.candidatoService.display(this.id)
@@ -47,7 +53,7 @@ export class CandidatoDisplayComponent implements OnInit {
   }
 
   home() {
-    this.router.navigate([''], { relativeTo: this.route })
+    this.location.back();
   }
 
   excluir(id: number) {
@@ -77,7 +83,7 @@ export class CandidatoDisplayComponent implements OnInit {
 
   navigateToEdit() {
     const id = this.id; // Substitua pelo ID desejado
-    const url = `/Candidato/edit/${id}`;
+    const url = `/candidato/edit/${id}`;
     this.router.navigateByUrl(url);
   }
 

@@ -1,0 +1,106 @@
+<div class="container vaga-detalhes-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Carregando vaga...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && !vaga" class="glass-card error-card">
+    <mat-icon>error_outline</mat-icon>
+    <h3>Ops!</h3>
+    <p>{{ msg || 'Não foi possível encontrar esta vaga.' }}</p>
+    <a routerLink="/vagas" class="premium-btn secondary">Voltar para vagas</a>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading && vaga" class="vaga-layout">
+    <div class="vaga-main">
+      <div class="glass-card header-card">
+        <div class="vaga-header-info">
+          <h1 class="premium-title">{{ vaga.titulo }}</h1>
+          <p class="company-name" *ngIf="vaga.nomeEmpresa">
+            <mat-icon>business</mat-icon> {{ vaga.nomeEmpresa }}
+          </p>
+          <p class="company-name" *ngIf="!vaga.nomeEmpresa">
+            <mat-icon>business</mat-icon> Empresa Confidencial
+          </p>
+          <div class="badges">
+            <span class="badge"><mat-icon>location_on</mat-icon> Remoto - CLT</span>
+            <span class="badge highlight"><mat-icon>payments</mat-icon> {{ vaga.salario | currency:'BRL' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="msg && !isError" class="glass-card success-msg">
+        <mat-icon>check_circle</mat-icon> {{ msg }}
+      </div>
+      <div *ngIf="msg && isError" class="glass-card error-msg">
+        <mat-icon>error</mat-icon> {{ msg }}
+      </div>
+
+      <div class="glass-card content-card section-card">
+        <h2 class="section-title"><mat-icon>description</mat-icon> Sobre a Vaga</h2>
+        <p class="text-content">{{ vaga.descricao }}</p>
+      </div>
+
+      <div class="glass-card content-card section-card" *ngIf="vaga.atividades">
+        <h2 class="section-title"><mat-icon>assignment</mat-icon> Suas Atividades</h2>
+        <ul class="styled-list">
+          <li *ngFor="let item of parseList(vaga.atividades)">{{ item }}</li>
+        </ul>
+      </div>
+
+      <div class="glass-card content-card section-card" *ngIf="vaga.requisitosObrigatorios || vaga.requisitos">
+        <h2 class="section-title"><mat-icon>verified</mat-icon> Requisitos Obrigatórios</h2>
+        <ul class="styled-list">
+          <li *ngFor="let item of parseList(vaga.requisitosObrigatorios || vaga.requisitos)">{{ item }}</li>
+        </ul>
+      </div>
+
+      <div class="glass-card content-card section-card" *ngIf="vaga.requisitosDesejaveis">
+        <h2 class="section-title"><mat-icon>star</mat-icon> Requisitos Desejáveis (Diferenciais)</h2>
+        <ul class="styled-list">
+          <li *ngFor="let item of parseList(vaga.requisitosDesejaveis)">{{ item }}</li>
+        </ul>
+      </div>
+
+      <div class="glass-card content-card section-card" *ngIf="vaga.beneficios">
+        <h2 class="section-title"><mat-icon>card_giftcard</mat-icon> Benefícios</h2>
+        <ul class="styled-list">
+          <li *ngFor="let item of parseList(vaga.beneficios)">{{ item }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Sidebar Sticky -->
+    <div class="vaga-sidebar">
+      <div class="glass-card sticky-card">
+        <h3 class="sidebar-title">Gostou da vaga?</h3>
+        <p class="sidebar-desc">Candidate-se agora mesmo e faça parte do nosso time.</p>
+        
+        <div class="action-buttons">
+          <button *ngIf="!isApplied" class="premium-btn apply-btn" (click)="apply()">
+            <mat-icon>send</mat-icon> Candidatar-se
+          </button>
+          
+          <div *ngIf="isApplied" class="applied-state">
+            <div class="applied-badge">
+              <mat-icon>how_to_reg</mat-icon> Você está inscrito!
+            </div>
+            <button class="premium-btn secondary cancel-btn" (click)="cancelApply()">
+              Cancelar Inscrição
+            </button>
+          </div>
+        </div>
+
+        <hr class="divider">
+        
+        <div class="sidebar-footer">
+          <p><mat-icon>calendar_today</mat-icon> Publicada em {{ vaga.dataCriacao | date:'dd/MM/yyyy' }}</p>
+          <p><mat-icon>work_outline</mat-icon> Por {{ vaga.recrutador }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

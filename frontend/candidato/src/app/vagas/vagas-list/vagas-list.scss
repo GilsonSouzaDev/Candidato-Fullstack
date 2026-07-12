@@ -1,0 +1,346 @@
+.vagas-list-container {
+  padding: 40px 0;
+}
+
+@media (max-width: 768px) {
+  .vagas-title {
+    font-size: 1.5rem !important;
+    margin-bottom: 12px;
+  }
+
+  .vagas-header {
+    margin-bottom: 24px;
+    text-align: center !important;
+  }
+
+  .search-input {
+    font-size: 0.9rem;
+    padding: 10px 10px 10px 44px !important;
+  }
+
+  .vagas-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .vaga-card-title {
+    font-size: 1.15rem;
+  }
+
+  .vaga-location {
+    font-size: 0.82rem;
+  }
+
+  .vaga-badge {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+  }
+
+  .salary-label {
+    font-size: 0.82rem;
+  }
+
+  .salary-value {
+    font-size: 1rem;
+  }
+
+  .vaga-desc {
+    font-size: 0.85rem;
+  }
+
+  .apply-btn {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  .simulation-card {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.vagas-header {
+  margin-bottom: 48px;
+  text-align: left;
+}
+
+.vagas-title {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.search-container {
+  margin-top: 24px;
+  position: relative;
+  max-width: 600px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  color: var(--text-muted);
+}
+
+.search-input {
+  width: 100%;
+  padding-left: 48px !important;
+  border-radius: 24px !important;
+  background: rgba(30, 30, 35, 0.7) !important;
+}
+
+.simulation-card {
+  margin: 0 0 32px 0;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px;
+}
+
+.simulation-input-group {
+  flex: 1;
+}
+
+.simulation-input-group label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.simulation-input-group input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.success-msg {
+  margin-bottom: 24px;
+  border-left: 4px solid var(--primary-color);
+  color: white;
+}
+
+.error-msg {
+  margin-bottom: 24px;
+  border-left: 4px solid var(--custom-app-warn, #ef4444);
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.vagas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.vaga-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.vaga-header {
+  margin-bottom: 16px;
+}
+
+.vaga-card-title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.vaga-location {
+  margin: 8px 0 0 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.vaga-location mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+.vaga-badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.vaga-badge {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+}
+
+.vaga-salary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.salary-label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.salary-value {
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.vaga-desc {
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  line-height: 1.5;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.apply-btn {
+  width: 100%;
+  border-radius: 24px;
+}
+
+.vagas-empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-icon-wrapper {
+  background: rgba(255,255,255,0.03);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.empty-icon-wrapper mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: var(--text-muted);
+}
+
+.vagas-empty-state h3 {
+  color: var(--text-main);
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  font-family: var(--font-family-title);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-top: 16px;
+  
+  .page-info {
+    color: var(--text-main);
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    white-space: nowrap;
+    
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    gap: 12px;
+    
+    .page-info {
+      font-size: 0.9rem;
+    }
+    
+    .icon-btn {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      gap: 4px;
+      
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+}
+
+.filters-container {
+  margin-top: 16px;
+}
+
+.cancel-btn {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  
+  &:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+    color: white;
+  }
+}
+
+.filter-btn {
+  background: rgba(30, 30, 35, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  border-radius: 20px;
+  padding: 6px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  
+  &.active {
+    background: rgba(var(--primary-color-rgb, 108, 92, 231), 0.2);
+    border-color: var(--primary-color, #6c5ce7);
+    color: white;
+    
+    mat-icon {
+      color: var(--primary-color, #6c5ce7);
+    }
+  }
+}

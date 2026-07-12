@@ -1,30 +1,214 @@
-.centered-list {
+.profile-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.avatar-container {
+  margin-bottom: 24px;
+}
+
+.avatar-diamond {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  transform: rotate(45deg);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1%;
-  padding: 5px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(249, 115, 22, 0.3);
+  font-size: 3rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 auto;
 }
 
-.card {
-  min-width: 400px;
-  margin: 10px;
-  padding: 10px;
-  width: 50%;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.avatar-diamond::before {
+  content: attr(data-initials);
+  transform: rotate(-45deg);
+  display: block;
 }
 
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+/* Because CSS attr() on pseudo elements with rotation is tricky, we can just un-rotate the text directly if needed. But in angular we put the text inside. Wait, text inside a rotated container gets rotated. Let's fix that. */
+.avatar-diamond {
+  /* We remove content from here, and apply rotation to the direct child if we wrap it, or just use grid/flex. */
+  position: relative;
+}
+.avatar-diamond > * {
+  transform: rotate(-45deg); /* un-rotate text */
 }
 
-.cabecalho{
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+.profile-name {
+  font-size: 1.5rem;
+  font-family: var(--font-family-title);
+  margin: 0 0 8px 0;
+  color: var(--text-main);
+}
+
+.profile-title {
+  color: var(--primary-color);
+  font-weight: 500;
+  margin: 0 0 32px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+}
+
+.sidebar-actions {
   width: 100%;
-  padding: 5px;
+}
+
+.section-card {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-family: var(--font-family-title);
+  color: var(--text-main);
+  margin: 0 0 24px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.info-item label {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.info-item p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.skill-badge {
+  background: rgba(249, 115, 22, 0.1);
+  color: var(--accent-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+@media (max-width: 992px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-container {
+  padding: 40px 0;
+  max-width: 1200px;
+}
+
+.profile-header {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn {
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.profile-header h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.edit-btn {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.delete-btn {
+  width: 100%;
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+}
+
+.linkedin-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #0a66c2;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: var(--font-family-main);
+  font-weight: 600;
+  font-size: 0.95rem;
+  width: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 12px;
+}
+.linkedin-link:hover {
+  background-color: #004182;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(10, 102, 194, 0.4);
+}
+
+.info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.phone-item {
+  margin: 0;
+}
+
+.phone-type {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.empty-state-text {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.hard-skill {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.soft-skill {
+  background-color: var(--secondary-color) !important;
+  color: var(--bg-dark) !important;
+}
+
+.course-badge {
+  background-color: var(--accent-color) !important;
+  color: white !important;
 }

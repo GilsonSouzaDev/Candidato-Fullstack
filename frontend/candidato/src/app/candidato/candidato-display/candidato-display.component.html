@@ -1,79 +1,119 @@
+<div class="container profile-container" *ngIf="candidatos$ | async as candidato">
+  <div class="profile-header">
+    <a (click)="home()" class="premium-btn secondary back-btn"><mat-icon>arrow_back</mat-icon></a>
+    <h2 class="premium-title">Meu Currículo</h2>
+  </div>
 
- <div *ngIf="candidatos$ | async as candidatos">
+  <div class="profile-layout">
+    <!-- Left Sidebar -->
+    <div class="glass-card profile-sidebar">
+      <div class="avatar-container">
+        <div class="avatar-diamond">
+          <span>{{ candidato.nome.charAt(0).toUpperCase() }}</span>
+        </div>
+      </div>
+      <h3 class="profile-name">{{ candidato.nome }}</h3>
+      <p class="profile-title" *ngIf="candidato.resumoProfissional">{{ candidato.resumoProfissional }}</p>
+      
+      <div class="sidebar-actions" *ngIf="isCandidato">
+        <button class="premium-btn edit-btn" (click)="navigateToEdit()">Editar Perfil</button>
+        <button class="premium-btn secondary delete-btn" (click)="excluir(candidato.id)">Excluir Conta</button>
+      </div>
 
+      <div class="sidebar-links" *ngIf="candidato.linkedInUrl">
+        <a [href]="candidato.linkedInUrl" target="_blank" class="linkedin-link">
+          <mat-icon>link</mat-icon> LinkedIn
+        </a>
+      </div>
+    </div>
 
-<div class="centered-list">
-  <mat-card class="card">
-    <mat-card-content>
-      <mat-card>
-        <mat-card-content>
-          <mat-toolbar color="primary" class="cabecalho" >
-            <h2>{{ candidatos.nome }}</h2>
-            <button mat-icon-button color="#FFFFFF" aria-label="Voltar para a página inicial" (click)="home()">
-              <mat-icon class="icone-voltar">home</mat-icon>
-            </button>
-          </mat-toolbar>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <p>Filiação:</p>
-          <ul>
-            <li>Nome do Pai: {{ candidatos.filiacao.nomePai }}</li>
-            <li>Nome da Mãe: {{ candidatos.filiacao.nomeMae }}</li>
-          </ul>
-        </mat-card-content>
-      </mat-card>
+    <!-- Right Main Content -->
+    <div class="profile-content">
+      <div class="glass-card section-card">
+        <h3 class="section-title">Dados Pessoais</h3>
+        
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Nome Completo</label>
+            <p>{{ candidato.nome }}</p>
+          </div>
+          <div class="info-item">
+            <label>CPF</label>
+            <p>{{ candidato.cpf || 'Não informado' }}</p>
+          </div>
+          <div class="info-item">
+            <label>Data de Nascimento</label>
+            <p>{{ (candidato.dataNascimento | date:'dd/MM/yyyy') || 'Não informada' }}</p>
+          </div>
+          <div class="info-item">
+            <label>Filiação</label>
+            <p>Mãe: {{ candidato.filiacao.nomeMae }}<br>Pai: {{ candidato.filiacao.nomePai || 'Não informado' }}</p>
+          </div>
+          <div class="info-item full-width">
+            <label>Endereço</label>
+            <p>{{ candidato.endereco.logradouro }}, {{ candidato.endereco.numero }} - {{ candidato.endereco.cidade.nome }}/{{ candidato.endereco.cidade.estado.sigla }} (CEP: {{ candidato.endereco.cep }}) - {{ candidato.endereco.bairro }}</p>
+          </div>
+          <div class="info-item">
+            <label>Telefones</label>
+            <p *ngIf="!candidato.telefones || candidato.telefones.length === 0">Nenhum telefone</p>
+            <p *ngFor="let tel of candidato.telefones" class="phone-item">
+              {{ tel.numero | phone }} <span class="phone-type">({{ tel.tipo | tipo }})</span>
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <mat-card>
-        <mat-card-content>
-          <p>Endereço:</p>
-          <ul>
-            <li>Logradouro: {{ candidatos.endereco.logradouro }}</li>
-            <li>CEP: {{ candidatos.endereco.cep }}</li>
-            <li>Número: {{ candidatos.endereco.numero }}</li>
-            <li>Cidade: {{ candidatos.endereco.cidade.nome }}</li>
-            <li>Estado: {{ candidatos.endereco.cidade.estado.nome }}</li>
-            <li>Sigla do Estado: {{ candidatos.endereco.cidade.estado.sigla }}</li>
-          </ul>
-        </mat-card-content>
-      </mat-card>
+      <div class="glass-card section-card">
+        <h3 class="section-title">Habilidades</h3>
+        <div class="skills-container" *ngIf="candidato.habilidades?.length; else noHabilidades">
+          <span class="skill-badge" *ngFor="let hab of candidato.habilidades" [ngClass]="{'hard-skill': hab.tipo === 'HardSkill', 'soft-skill': hab.tipo === 'SoftSkill'}">
+            {{ hab.nome }} ({{hab.nivel}})
+          </span>
+        </div>
+        <ng-template #noHabilidades>
+          <p class="empty-state-text">Nenhuma habilidade cadastrada.</p>
+        </ng-template>
+      </div>
 
-      <mat-card>
-        <mat-card-content>
-          <p>Telefones:</p>
-          <ul>
-            <li *ngFor="let telefone of candidatos.telefones">
-              Número: {{ telefone.numero }}, Tipo: {{ telefone.tipo | tipo}}
-            </li>
-          </ul>
-        </mat-card-content>
-      </mat-card>
+      <div class="glass-card section-card">
+        <h3 class="section-title">Experiência Profissional</h3>
+        <div *ngIf="candidato.experiencias?.length; else noExperiencias" class="experience-list">
+          <div *ngFor="let exp of candidato.experiencias" class="experience-item" style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <h4 style="margin: 0; color: var(--accent-color);">{{ exp.cargo }} na {{ exp.empresa }}</h4>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">{{ (exp.dataInicio | date:'MM/yyyy') || '...' }} - {{ (exp.dataFim | date:'MM/yyyy') || 'Atual' }}</span>
+            <p style="margin-top: 8px;">{{ exp.descricao }}</p>
+          </div>
+        </div>
+        <ng-template #noExperiencias>
+          <p class="empty-state-text">Nenhuma experiência cadastrada.</p>
+        </ng-template>
+      </div>
 
-      <mat-card>
-        <mat-card-content>
-          <p>Cursos:</p>
-          <ul>
-            <li *ngFor="let curso of candidatos.cursos">
-              Nome do Curso: {{ curso.nome }}
-            </li>
-          </ul>
-        </mat-card-content>
-      </mat-card>
-    </mat-card-content>
-    <mat-card-actions class="button-container">
-      <button mat-raised-button color="primary" (click)="navigateToEdit()">Editar</button>
-      <button mat-raised-button color="warn" (click)="excluir(candidatos.id)">Excluir</button>
-    </mat-card-actions>
+      <div class="glass-card section-card">
+        <h3 class="section-title">Formação Acadêmica</h3>
+        <div *ngIf="candidato.formacoes?.length; else noFormacoes" class="experience-list">
+          <div *ngFor="let formacao of candidato.formacoes" class="experience-item" style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <h4 style="margin: 0; color: var(--accent-color);">{{ formacao.nome }} na {{ formacao.instituicao }}</h4>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">{{ formacao.status }} | {{ (formacao.dataInicio | date:'MM/yyyy') || '...' }} - {{ (formacao.dataFim | date:'MM/yyyy') || '...' }}</span>
+          </div>
+        </div>
+        <ng-template #noFormacoes>
+          <p class="empty-state-text">Nenhuma formação acadêmica cadastrada.</p>
+        </ng-template>
+      </div>
 
-
-  </mat-card>
+      <div class="glass-card section-card">
+        <h3 class="section-title">Cursos Complementares</h3>
+        <div *ngIf="candidato.cursos?.length; else noCursos" class="experience-list">
+          <div *ngFor="let curso of candidato.cursos" class="experience-item" style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <h4 style="margin: 0; color: var(--accent-color);">{{ curso.nome }} ({{ curso.instituicao }})</h4>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Ano de Conclusão: {{ curso.anoConclusao }} | Carga Horária: {{ curso.totalHoras }}h</span>
+          </div>
+        </div>
+        <ng-template #noCursos>
+          <p class="empty-state-text">Nenhum curso complementar cadastrado.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
 </div>
-
-
-
-</div>
-
-
-
-

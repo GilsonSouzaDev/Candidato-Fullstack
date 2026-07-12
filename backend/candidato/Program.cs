@@ -1,4 +1,5 @@
 // old strategies removed
+using System.Text.Json.Serialization;
 using FluentValidation;
 using candidato.Validations;
 using candidato.Middlewares;
@@ -39,7 +40,11 @@ builder.Services.AddDbContext<CandidatoContext>(opts => {
 
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options => 
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 builder.Services.AddAuthorization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -61,6 +66,9 @@ builder.Services.AddScoped<IFachadaVaga, FachadaVaga>();
 
 builder.Services.AddScoped<ICandidaturaDao, CandidaturaDao>();
 builder.Services.AddScoped<IFachadaCandidatura, FachadaCandidatura>();
+
+// AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Authentication JWT
 var jwtKey = builder.Configuration["Jwt:Key"] ?? "GilsonPortfolioSuperSecretKey2026!@#";
@@ -92,7 +100,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseCors(MyAllowSpecificOrigins);
 
@@ -104,7 +112,152 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<CandidatoContext>();
-    db.Database.EnsureCreated();
+    db.Database.Migrate();
+
+    if (!db.Usuarios.Any(u => u.Role == "Admin"))
+    {
+        db.Usuarios.Add(new Usuario
+        {
+            Nome = "Administrador Geral",
+            Email = "admin@candidato.com",
+            SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456"),
+            Role = "Admin"
+        });
+        db.SaveChanges();
+    }
+
+    if (!db.Usuarios.Any(u => u.Role == "Recrutador"))
+    {
+        var recrutador = new Usuario
+        {
+            Nome = "Recrutador Seed",
+            Email = "recrutador@sistema.com",
+            SenhaHash = BCrypt.Net.BCrypt.HashPassword("recrutador123"),
+            Role = "Recrutador"
+        };
+        db.Usuarios.Add(recrutador);
+        db.SaveChanges();
+
+        db.Vagas.Add(new Vaga
+        {
+            Titulo = "Desenvolvedor Full Stack Angular + .NET",
+            Descricao = "Vaga para atuar no desenvolvimento de um ATS Premium. Necessário conhecimento em Angular e .NET.",
+            Requisitos = "Angular, .NET, C#",
+            Salario = 8000.00m,
+            StatusAberta = true,
+            DataCriacao = DateTime.UtcNow,
+            CriadoPorId = recrutador.Id
+        });
+        
+        db.Vagas.Add(new Vaga
+        {
+            Titulo = "UX/UI Designer Sênior",
+            Descricao = "Buscamos um designer com forte experiência em Glassmorphism e interfaces limpas.",
+            Requisitos = "Figma, Design System",
+            Salario = 7500.00m,
+            StatusAberta = true,
+            DataCriacao = DateTime.UtcNow.AddDays(-2),
+            CriadoPorId = recrutador.Id
+        });
+        
+        db.SaveChanges();
+    }
+
+    if (!db.Usuarios.Any(u => u.Email == "candidato@candidato.com"))
+    {
+        var candidato = new Usuario
+        {
+            Nome = "Candidato Seed",
+            Email = "candidato@candidato.com",
+            SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456"),
+            Role = "Candidato"
+        };
+        db.Usuarios.Add(candidato);
+        db.SaveChanges();
+        
+        var curriculumCandidato = new Candidato
+        {
+            Nome = "Candidato Seed",
+            Cpf = "22222222222",
+            DataNascimento = new DateTime(1998, 5, 10).ToUniversalTime(),
+            ResumoProfissional = "Desenvolvedor de Software Iniciante",
+            LinkedInUrl = "https://linkedin.com/in/candidatoseed",
+            UsuarioId = candidato.Id,
+            Endereco = new Endereco
+            {
+                Logradouro = "Rua Teste",
+                Numero = "456",
+                Cep = "00000-000",
+                Bairro = "Centro",
+                Cidade = new Cidade
+                {
+                    Nome = "São Paulo",
+                    Estado = new Estado
+                    {
+                        Nome = "São Paulo",
+                        Sigla = "SP"
+                    }
+                }
+            },
+            Filiacao = new Filiacao
+            {
+                NomeMae = "Mãe do Candidato Seed",
+                NomePai = "Pai do Candidato Seed"
+            },
+            Telefones = new List<Telefone>
+            {
+                new Telefone { Numero = "11999998888", Tipo = TipoTelefone.Celular }
+            }
+        };
+        db.Candidatos.Add(curriculumCandidato);
+        db.SaveChanges();
+    }
+
+    if (!db.Usuarios.Any(u => u.Email == "candidato_vagas@candidato.com"))
+    {
+        var candidatoVagas = new Usuario
+        {
+            Nome = "Candidato Vagas",
+            Email = "candidato_vagas@candidato.com",
+            SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456"),
+            Role = "Candidato"
+        };
+        db.Usuarios.Add(candidatoVagas);
+        db.SaveChanges();
+        
+        var curriculum = new Candidato
+        {
+            Nome = "Candidato Vagas",
+            Cpf = "11111111111",
+            DataNascimento = new DateTime(1995, 1, 1).ToUniversalTime(),
+            ResumoProfissional = "Desenvolvedor de Software Especialista",
+            LinkedInUrl = "https://linkedin.com/in/candidatovagas",
+            UsuarioId = candidatoVagas.Id,
+            Endereco = new Endereco
+            {
+                Logradouro = "Rua Teste",
+                Numero = "123",
+                Cep = "00000-000",
+                Bairro = "Centro",
+                Cidade = new Cidade
+                {
+                    Nome = "São Paulo",
+                    Estado = new Estado
+                    {
+                        Nome = "São Paulo",
+                        Sigla = "SP"
+                    }
+                }
+            },
+            Filiacao = new Filiacao
+            {
+                NomeMae = "Mãe do Candidato",
+                NomePai = "Pai do Candidato"
+            }
+        };
+        db.Candidatos.Add(curriculum);
+        db.SaveChanges();
+    }
 }
 
 app.Run();

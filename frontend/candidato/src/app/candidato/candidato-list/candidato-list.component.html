@@ -1,55 +1,62 @@
-<div class="container" style="padding: 40px 0;">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+<div class="container list-container">
+  <div class="list-header">
     <div>
-      <h2 class="premium-title" style="margin-bottom: 8px; font-size: 2.2rem;">Banco de Candidatos</h2>
-      <p style="margin: 0; color: var(--text-muted);">Visualize todos os currículos registrados no banco.</p>
+      <h2 class="premium-title page-title">Meu Currículo</h2>
+      <p class="page-subtitle">Gerencie suas informações profissionais e acadêmicas.</p>
     </div>
-    <button class="premium-btn" routerLink="/candidato/new"><mat-icon>person_add</mat-icon> Novo Candidato</button>
+    <ng-container *ngIf="candidatos$ | async as candidatos">
+      <button *ngIf="candidatos.length === 0" class="premium-btn" routerLink="/candidato/new"><mat-icon>post_add</mat-icon> Cadastrar Currículo</button>
+    </ng-container>
   </div>
 
-  <div class="glass-card" style="padding: 0; overflow: hidden;">
+  <div class="glass-card table-card">
     <div *ngIf="candidatos$ | async as candidatos; else loading">
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left;">
-          <thead style="background: rgba(0,0,0,0.2);">
+      <div class="table-responsive" *ngIf="candidatos.length > 0">
+        <table class="premium-table">
+          <thead>
             <tr>
-              <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">Nome do Candidato</th>
-              <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">Formação</th>
-              <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border);">Contato</th>
-              <th style="padding: 16px 24px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); text-align: right;">Ações</th>
+              <th>Nome do Candidato</th>
+              <th>Formação</th>
+              <th>Contato</th>
+              <th class="text-right">Ações</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let candidato of candidatos" style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
-              <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 500;">
+            <tr *ngFor="let candidato of candidatos" class="table-row">
+              <td class="col-main">
                 {{candidato.nome}}
               </td>
-              <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-muted);">
-                {{candidato.cursos?.[0]?.nome || 'Não informado'}}
+              <td class="col-muted">
+                {{ (candidato.formacoes && candidato.formacoes.length > 0) ? candidato.formacoes[0].nome : 'Não informado' }}
               </td>
-              <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-muted);">
-                {{candidato.telefones?.[0]?.numero || 'Não informado'}}
+              <td class="col-muted">
+                {{ (candidato.telefones && candidato.telefones.length > 0) ? (candidato.telefones[0].numero | phone) : 'Não informado' }}
               </td>
-              <td style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: right;">
-                <button class="premium-btn secondary" style="padding: 6px 12px; border-radius: 6px;" aria-label="Visualizar Candidato">
-                  <mat-icon style="font-size: 18px; width: 18px; height: 18px;">visibility</mat-icon>
-                </button>
+              <td class="text-right">
+                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                  <button class="premium-btn secondary action-btn" style="color: var(--custom-app-primary)" [routerLink]="['/candidato/new']" aria-label="Editar Currículo" title="Editar">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button class="premium-btn secondary action-btn" [routerLink]="['/candidato/display', candidato.id]" aria-label="Visualizar Currículo" title="Visualizar">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
       
-      <div *ngIf="candidatos.length === 0" style="padding: 60px 20px; text-align: center;">
-        <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: var(--text-muted); margin-bottom: 16px;">people_outline</mat-icon>
-        <h3 style="color: var(--text-main); font-size: 1.3rem; margin-bottom: 8px;">Nenhum candidato encontrado</h3>
-        <p style="color: var(--text-muted);">O banco de currículos está vazio.</p>
+      <div *ngIf="candidatos.length === 0" class="empty-state">
+        <mat-icon class="empty-icon">person_add_disabled</mat-icon>
+        <h3>Currículo não cadastrado</h3>
+        <p class="empty-desc">Você ainda não cadastrou o seu currículo. Clique em "Cadastrar Currículo" para começar.</p>
       </div>
     </div>
     
     <ng-template #loading>
-      <div style="padding: 60px; text-align: center; color: var(--text-muted);">
-        <mat-icon style="font-size: 32px; width: 32px; height: 32px; animation: spin 2s linear infinite;">refresh</mat-icon>
+      <div class="loading-state">
+        <mat-icon class="spinner">refresh</mat-icon>
         <p>Carregando candidatos...</p>
       </div>
     </ng-template>

@@ -1,7 +1,7 @@
 const proxyConfig = [
   {
     context: ['/api'],
-    target: 'http://localhost:3000/',
+    target: 'http://localhost:5260',
     secure: false,
     logLevel: 'debug'
   }

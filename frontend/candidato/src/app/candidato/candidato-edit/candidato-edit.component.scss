@@ -1,116 +1,136 @@
-.example-form {
-  min-width: 150px;
-  max-width: 850px;
-  padding: auto;
-  width: 90%;
-  margin: auto;
+.form-container {
+  padding: 40px 0;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-td {
-  padding-right: 8px;
+.form-header {
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.mat-form-field
-{
-  padding: auto;
+.form-title-wrap h2 {
+  margin-bottom: 4px;
+  font-size: 2.2rem;
 }
 
-mat-card{
+.form-title-wrap p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.candidato-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+}
+
+.grid-1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .city-group, .address-group {
+    grid-column: span 1 !important;
+  }
+  .form-array-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.form-array-grid {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: end;
+}
+
+.form-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.error-text {
+  color: var(--secondary-color);
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.select-option {
+  color: #fff;
+  background-color: var(--bg-dark, #121214);
+}
+
+::ng-deep .glass-stepper {
+  background: transparent !important;
+}
+
+::ng-deep .mat-step-header .mat-step-label {
+  color: var(--text-main) !important;
+  font-weight: 500;
+}
+
+::ng-deep .mat-step-header .mat-step-label.mat-step-label-active {
+  color: var(--accent-color) !important;
+  font-weight: bold;
+}
+
+::ng-deep .mat-step-header .mat-step-icon {
+  background-color: var(--glass-bg) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--glass-border);
+}
+
+::ng-deep .mat-step-header .mat-step-icon-state-edit,
+::ng-deep .mat-step-header .mat-step-icon-state-done {
+  background-color: var(--accent-color) !important;
+  color: #fff !important;
+  border: none;
+}
+
+::ng-deep .mat-stepper-horizontal-line {
+  border-top-color: var(--glass-border) !important;
+}
+
+::ng-deep .hide-headers .mat-horizontal-stepper-header-container,
+::ng-deep .hide-headers .mat-step-header,
+::ng-deep .hide-headers .mat-stepper-horizontal-line {
+  display: none !important;
+}
+
+::ng-deep .mat-horizontal-content-container {
+  padding: 0 !important;
+}
+
+.stepper-actions {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 8px;
-  width: 100%;
-}
-
-.botao__home{
-  display: flex;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-  height: 50px;
-}
-
-.candidato
-{
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 3% ;
-  width: 100%;
-}
-.item__candidato{
-    width: 60%;
-}
-
-.filiacao{
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 98%;
-}
-.item__filiacao{
-  width: 46%;
-  padding: 10px;
-}
-
-.endereco div{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.endereco_sec{
-  display: flex;
-  justify-content: space-around;
-}
-.itens{
-  margin: 0 20px;
-}
-
-.telefones{
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-}
-
-.tipo{
-  padding: 8px;
-}
-
-.cursos{
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-}
-
-.validation-error span {
-  color: #DC3545;
-  margin-top: .4em;
-  border-left: 3px solid #DC3545;
-  padding-left: .2em;
-}
-
-@media screen and (max-width: 591px) {
-
-  .itens input{
-    min-width: 250px;
-  }
-
-  .telefone{
-    margin-left: 2.8rem;
-  }
-  .tipo{
-    margin-left: 2.2rem;
-  }
-
-
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--glass-border);
 }

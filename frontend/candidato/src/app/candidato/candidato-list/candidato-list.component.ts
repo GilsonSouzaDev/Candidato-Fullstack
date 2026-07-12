@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, map } from 'rxjs';
 
 import { CandidatosService } from '../services/candidatos.service';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
@@ -29,14 +29,17 @@ export class CandidatoListComponent implements OnInit{
               )
   {
 
-    this.candidatos$ = this.candidatoService.list()
+    this.candidatos$ = this.candidatoService.getMeuPerfil()
       .pipe(
+        map(candidato => [candidato]),
         catchError(error => {
-          this.onError('Erro ao carregar candidatos');
+          if (error.status === 404) {
+             return of([]);
+          }
+          this.onError('Erro ao carregar currículo');
           return of([])
         })
     );
-
   }
 
   onError(errorMsg: string) {

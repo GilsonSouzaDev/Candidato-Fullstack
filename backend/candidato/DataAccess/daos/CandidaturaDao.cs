@@ -30,6 +30,7 @@ namespace candidato.DataAccess.daos
         {
             return await _context.Candidaturas
                 .Include(c => c.Candidato)
+                    .ThenInclude(cand => cand.Usuario)
                 .Where(c => c.VagaId == vagaId)
                 .OrderByDescending(c => c.DataAplicacao)
                 .ToListAsync();
@@ -42,11 +43,30 @@ namespace candidato.DataAccess.daos
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
+        public async Task<List<Candidatura>> ObterPorCandidato(long candidatoId)
+        {
+            return await _context.Candidaturas
+                .Where(c => c.CandidatoId == candidatoId)
+                .ToListAsync();
+        }
+
         public async Task<Candidatura> Atualizar(Candidatura candidatura)
         {
             _context.Candidaturas.Update(candidatura);
             await _context.SaveChangesAsync();
             return candidatura;
+        }
+
+        public async Task Deletar(long vagaId, long candidatoId)
+        {
+            var candidatura = await _context.Candidaturas
+                .FirstOrDefaultAsync(c => c.VagaId == vagaId && c.CandidatoId == candidatoId);
+            
+            if (candidatura != null)
+            {
+                _context.Candidaturas.Remove(candidatura);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -7,16 +7,15 @@ import { ErrorDialogComponent } from './components/error-dialog/error-dialog.com
 import { CategoryPipe } from './pipes/category.pipe';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { TipoPipe } from './pipes/tipo.pipe';
-
-
-
+import { PhonePipe } from './pipes/phone.pipe';
 
 @NgModule({
   declarations: [
     ErrorDialogComponent,
     CategoryPipe,
     ConfirmDialogComponent,
-    TipoPipe
+    TipoPipe,
+    PhonePipe
   ],
   imports: [
     CommonModule,
@@ -26,7 +25,8 @@ import { TipoPipe } from './pipes/tipo.pipe';
   exports: [
     ErrorDialogComponent,
     CategoryPipe,
-    TipoPipe
+    TipoPipe,
+    PhonePipe
   ]
 })
 export class SharedModule { }

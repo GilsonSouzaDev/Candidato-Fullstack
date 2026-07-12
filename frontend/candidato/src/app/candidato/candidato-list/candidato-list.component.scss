@@ -1,25 +1,3 @@
-table {
-  width: 100%;
-}
-
-.container {
-  width: 80%;
-  margin: auto;
-}
-
-.loading-spinner{
-  padding: 25px;
-  background: rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.container__cont{
-  display: flex;
-  flex-direction: column;
-}
-
 @media screen and (max-width: 678px){
   table th {
     font-size: 14px;
@@ -35,4 +13,121 @@ table {
   table th:nth-child(3) {
     display: none;
   }
+}
+
+.list-container {
+  padding: 40px 0;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.page-title {
+  margin-bottom: 8px;
+  font-size: 2.2rem;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.table-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.premium-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.premium-table thead {
+  background: rgba(0,0,0,0.2);
+}
+
+.premium-table th {
+  padding: 16px 24px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.table-row {
+  transition: background 0.2s;
+}
+
+.table-row:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.premium-table td {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.col-main {
+  font-weight: 500;
+}
+
+.col-muted {
+  color: var(--text-muted);
+}
+
+.text-right {
+  text-align: right;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.action-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.empty-state, .loading-state {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  color: var(--text-main);
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.empty-state p, .loading-state p {
+  color: var(--text-muted);
+}
+
+.spinner {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }

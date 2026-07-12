@@ -12,34 +12,14 @@ namespace candidato.Controllers.Fachadas
             _vagaDao = vagaDao;
         }
 
-        public async Task<List<object>> ObterAbertas()
+        public async Task<List<Vaga>> ObterAbertas()
         {
-            var vagas = await _vagaDao.ObterAbertas();
-            return vagas.Select(v => (object)new {
-                v.Id,
-                v.Titulo,
-                v.Descricao,
-                v.Requisitos,
-                v.Salario,
-                v.DataCriacao,
-                Recrutador = v.CriadoPor != null ? v.CriadoPor.Nome : "Desconhecido"
-            }).ToList();
+            return await _vagaDao.ObterAbertas();
         }
 
-        public async Task<object?> ObterDetalhes(long id)
+        public async Task<Vaga?> ObterDetalhes(long id)
         {
-            var vaga = await _vagaDao.ObterPorId(id);
-            if (vaga == null) return null;
-
-            return new {
-                vaga.Id,
-                vaga.Titulo,
-                vaga.Descricao,
-                vaga.Requisitos,
-                vaga.Salario,
-                vaga.StatusAberta,
-                Recrutador = vaga.CriadoPor?.Nome
-            };
+            return await _vagaDao.ObterPorId(id);
         }
 
         public async Task<List<Vaga>> ObterMinhasVagas(long userId)
@@ -60,6 +40,15 @@ namespace candidato.Controllers.Fachadas
             };
 
             return await _vagaDao.Adicionar(vaga);
+        }
+
+        public async Task<bool> RemoverVaga(long id, long userId)
+        {
+            var vaga = await _vagaDao.ObterPorId(id);
+            if (vaga == null || vaga.CriadoPorId != userId)
+                return false;
+
+            return await _vagaDao.Remover(id);
         }
     }
 }

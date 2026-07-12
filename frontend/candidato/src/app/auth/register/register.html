@@ -1,27 +1,47 @@
-<div class="container" style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
-  <div class="glass-card" style="width: 100%; max-width: 420px;">
-    <h2 class="premium-title" style="text-align: center; font-size: 1.8rem;">Nova Conta ATS</h2>
-    <form (ngSubmit)="onSubmit()">
-      <div style="margin-bottom: 20px;">
+<div class="container auth-container">
+  <div class="glass-card auth-card">
+    <div class="auth-header">
+      <div class="auth-icon-wrapper">
+        <mat-icon>how_to_reg</mat-icon>
+      </div>
+      <h2 class="premium-title">Nova Conta Candidato</h2>
+      <p class="auth-subtitle">Crie seu acesso para se candidatar às nossas vagas.</p>
+    </div>
+    <form (ngSubmit)="onSubmit()" class="auth-form">
+      <div class="form-group">
         <label>Nome Completo</label>
-        <input type="text" [(ngModel)]="nome" name="nome" required placeholder="João Silva" style="width: 100%; box-sizing: border-box;">
+        <div class="input-with-icon">
+          <mat-icon>badge</mat-icon>
+          <input type="text" [(ngModel)]="nome" name="nome" required placeholder="João Silva" class="premium-input">
+        </div>
       </div>
-      <div style="margin-bottom: 20px;">
-        <label>E-mail Corporativo</label>
-        <input type="email" [(ngModel)]="email" name="email" required placeholder="joao@empresa.com" style="width: 100%; box-sizing: border-box;">
+      <div class="form-group">
+        <label>E-mail</label>
+        <div class="input-with-icon">
+          <mat-icon>email</mat-icon>
+          <input type="email" [(ngModel)]="email" name="email" required placeholder="joao@email.com" class="premium-input">
+        </div>
       </div>
-      <div style="margin-bottom: 24px;">
+      <div class="form-group">
         <label>Criar Senha</label>
-        <input type="password" [(ngModel)]="senha" name="senha" required placeholder="Mínimo 8 caracteres" style="width: 100%; box-sizing: border-box;">
+        <div class="input-with-icon">
+          <mat-icon>lock</mat-icon>
+          <input type="password" [(ngModel)]="senha" name="senha" required placeholder="Mínimo 8 caracteres" class="premium-input">
+        </div>
       </div>
       
-      <p style="color: var(--secondary-color); font-size: 0.9rem; text-align: center;" *ngIf="error">{{error}}</p>
-      <p style="color: #10b981; font-size: 0.9rem; text-align: center;" *ngIf="success">{{success}}</p>
+      <div *ngIf="error" class="error-msg">
+        <mat-icon>error_outline</mat-icon> {{error}}
+      </div>
+      <div *ngIf="success" class="success-msg-inline">
+        <mat-icon>check_circle</mat-icon> {{success}}
+      </div>
       
-      <button type="submit" class="premium-btn" style="width: 100%; padding: 14px; font-size: 1rem;">Registrar Acesso</button>
+      <button type="submit" class="premium-btn auth-submit-btn">Registrar Acesso</button>
     </form>
-    <p style="text-align: center; margin-top: 24px; color: var(--text-muted); font-size: 0.95rem;">
-      Já é recrutador? <a routerLink="/login" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Faça Login</a>
-    </p>
+    <div class="auth-footer">
+      <p>Já possui conta?</p>
+      <a routerLink="/login" class="auth-link">Faça Login</a>
+    </div>
   </div>
 </div>

@@ -1,225 +1,355 @@
-<mat-card>
-  <mat-card class="botao__home">
-
-    <mat-card-header>
-      <mat-card-title>Formulario de Edição</mat-card-title>
-    </mat-card-header>
-    <div >
-      <button mat-mini-fab color="primary" aria-label="Voltar para a página inicial" (click)="home()">
-        <mat-icon class="icone-voltar">home</mat-icon>
-      </button>
+<div class="container form-container">
+  <div class="form-header">
+    <div class="form-title-wrap">
+      <h2 class="premium-title">Edição de Currículo</h2>
+      <p>Atualize suas informações.</p>
     </div>
-  </mat-card>
-
-
-
-  <mat-card-content>
-  <form [formGroup]="formulario"  class="example-form" #formDir="ngForm">
-
-
-<mat-card>
-  <mat-card-title>Candidato</mat-card-title>
-  <div class="candidato">
-    <mat-form-field class="item__candidato">
-      <mat-label>Candidato </mat-label>
-      <input matInput placeholder="Nome Candidato" formControlName="nome"  ngModel required minlength="5" maxlength="150">
-    </mat-form-field>
+    <button type="button" class="premium-btn secondary" routerLink="/vagas"><mat-icon>arrow_back</mat-icon> Voltar</button>
   </div>
-  <div *ngIf="(nome?.invalid && nome?.touched) || nome?.dirty" class="validation-error">
-    <span *ngIf="nome?.errors?.['required']" >O campo candidato deve ser preenchido</span>
-    <span *ngIf="nome?.errors?.['minlength']" >O campo candidato deve ter no mínimo 5 caracteres</span>
-    <span *ngIf="nome?.errors?.['maxlength'] && !nome?.errors?.['minlength']" >O campo candidato deve ter no máximo 150 caracteres</span>
-  </div>
-</mat-card>
 
-  <mat-card>
-    <h2>Filiação</h2>
-      <div formGroupName="filiacao" class="filiacao">
-        <mat-form-field class="item__filiacao">
-          <mat-label> Pai </mat-label>
-            <input matInput placeholder="Nome do Pai" formControlName="nomePai" ngModel>
-        </mat-form-field>
-
-        <mat-form-field class="item__filiacao">
-          <mat-label> Mãe </mat-label>
-          <input matInput placeholder="Nome do Mae*" formControlName="nomeMae"    ngModel required minlength="5" maxlength="150">
-        </mat-form-field>
-      </div>
-      <div *ngIf="(nomeMae?.invalid && nomeMae?.touched) || nomeMae?.dirty" class="validation-error">
-        <span *ngIf="nomeMae?.errors?.['required']" >O campo Mãe deve ser preenchido</span>
-        <span *ngIf="nomeMae?.errors?.['minlength']" >O campo Mãe deve ter no mínimo 5 caracteres</span>
-      </div>
-  </mat-card>
-
-    <mat-card>
-        <h2>Endereço</h2>
-        <div class="endereco">
-          <div formGroupName="endereco">
-            <div class="itens">
-              <mat-form-field>
-                <mat-label>logradouro </mat-label>
-                <input matInput placeholder="Rua, Estrada ou Avenida" formControlName="logradouro" ngModel required>
-              </mat-form-field>
-            </div>
-
-            <div class="itens">
-              <mat-form-field >
-                <mat-label> Número </mat-label>
-                <input matInput placeholder="numero endereco" formControlName="numero" ngModel required>
-              </mat-form-field>
-            </div>
-
-            <div class="itens">
-              <mat-form-field >
-                <mat-label> cep </mat-label>
-                <input matInput placeholder="cep endereco" formControlName="cep"  ngModel required>
-              </mat-form-field>
-            </div>
-
-
-
-            <div formGroupName="cidade" class="endereco_sec">
-              <div class="itens">
-                <mat-form-field>
-                  <mat-label> cidade </mat-label>
-                  <input matInput placeholder="cidade" formControlName="nome"    ngModel required>
-                </mat-form-field>
-              </div>
-
-              <div formGroupName="estado">
-                <div class="itens">
-                  <mat-form-field>
-                    <mat-label> estado </mat-label>
-                    <input matInput placeholder="estado" formControlName="nome"  ngModel required>
-                  </mat-form-field>
-                </div>
-
-                <div class="itens">
-                  <mat-form-field>
-                    <mat-label> sigla </mat-label>
-                    <input matInput placeholder="sigla" formControlName="sigla" ngModel required>
-                  </mat-form-field>
-                </div>
+  <mat-stepper linear="false" #stepper class="glass-stepper hide-headers">
+    <!-- Etapa 1: Apresentação -->
+    <mat-step>
+      <form [formGroup]="meuFormulario" class="candidato-form">
+        <ng-template matStepLabel>Apresentação</ng-template>
+        
+        <div class="glass-card mt-20">
+          <h2 class="premium-title section-title">Dados Pessoais (Passo 1 de 6)</h2>
+          <div class="grid-2">
+            <div>
+              <label for="Nome">Nome Completo</label>
+              <input type="text" id="Nome" title="Nome Completo" formControlName="Nome" required placeholder="Ex: Maria Antonieta" class="form-input">
+              <div *ngIf="Nome.invalid && (Nome.dirty || Nome.touched)" class="error-text">
+                <span *ngIf="Nome.errors?.['required']">Nome é obrigatório</span>
+                <span *ngIf="Nome.errors?.['minlength']">Mínimo de 5 caracteres</span>
               </div>
             </div>
+            
+            <div>
+              <label for="Cpf">CPF</label>
+              <input type="text" id="Cpf" title="CPF" formControlName="Cpf" required placeholder="000.000.000-00" class="form-input">
+            </div>
 
+            <div>
+              <label for="DataNascimento">Data de Nascimento</label>
+              <input type="date" id="DataNascimento" title="Data de Nascimento" formControlName="DataNascimento" class="form-input">
+            </div>
 
+            <div>
+              <label for="LinkedInUrl">LinkedIn (URL)</label>
+              <input type="url" id="LinkedInUrl" title="LinkedIn" formControlName="LinkedInUrl" placeholder="https://linkedin.com/in/..." class="form-input">
+            </div>
+
+            <div style="grid-column: span 2;">
+              <label for="ResumoProfissional">Resumo Profissional</label>
+              <textarea id="ResumoProfissional" title="Resumo Profissional" formControlName="ResumoProfissional" placeholder="Descreva um pouco sobre sua trajetória..." class="form-input" style="min-height: 100px; resize: vertical;"></textarea>
+            </div>
+          </div>
+        </div>
+        
+        <div class="stepper-actions">
+          <div></div>
+          <button type="button" class="premium-btn" matStepperNext>Próximo</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Etapa 2: Filiação e Endereço -->
+    <mat-step>
+      <form [formGroup]="meuFormulario" class="candidato-form">
+        <ng-template matStepLabel>Filiação & Endereço</ng-template>
+        
+        <!-- Filiação -->
+        <div class="glass-card mt-20" formGroupName="Filiacao">
+          <h2 class="premium-title section-title">Filiação & Endereço (Passo 2 de 6)</h2>
+          <div class="grid-2">
+            <div>
+              <label for="NomeMae">Nome da Mãe</label>
+              <input type="text" id="NomeMae" title="Nome da Mãe" formControlName="NomeMae" placeholder="Obrigatório" class="form-input">
+            </div>
+            <div>
+              <label for="NomePai">Nome do Pai</label>
+              <input type="text" id="NomePai" title="Nome do Pai" formControlName="NomePai" placeholder="Opcional" class="form-input">
+            </div>
           </div>
         </div>
 
-      <div *ngIf="(logradouro?.invalid && logradouro?.touched) || logradouro?.dirty" class="validation-error">
-        <span *ngIf="logradouro?.errors?.['required']" >O campo logradouro deve ser preenchido</span>          
-      </div>
-      <div *ngIf="(numero?.invalid && numero?.touched) || numero?.dirty" class="validation-error">
-        <span *ngIf="numero?.errors?.['required']  && !logradouro?.errors?.['required']" >O campo numero deve ser preenchido</span>          
-      </div>
-      <div *ngIf="(cep?.invalid && cep?.touched) || cep?.dirty" class="validation-error">
-        <span *ngIf="cep?.errors?.['required']  && 
-                    !logradouro?.errors?.['required'] && 
-                    !numero?.errors?.['required']" >O campo cep deve ser preenchido</span>          
-      </div>
-      <div *ngIf="(cidade?.invalid && cidade?.touched) || cidade?.dirty" class="validation-error">
-        <span *ngIf="cidade?.errors?.['required']  && 
-                    !logradouro?.errors?.['required'] && 
-                    !numero?.errors?.['required'] &&
-                    !cep?.errors?.['required']" >O campo cidade deve ser preenchido</span>          
-      </div>
-      <div *ngIf="(estado?.invalid && estado?.touched) || estado?.dirty" class="validation-error">
-        <span *ngIf="estado?.errors?.['required']  && 
-                    !logradouro?.errors?.['required'] && 
-                    !numero?.errors?.['required'] &&
-                    !cep?.errors?.['required'] &&
-                    !cidade?.errors?.['required']" >O campo estado deve ser preenchido</span>          
-      </div>
-      <div *ngIf="(sigla?.invalid && sigla?.touched) || sigla?.dirty" class="validation-error">
-        <span *ngIf="sigla?.errors?.['required']  && 
-                    !logradouro?.errors?.['required'] && 
-                    !numero?.errors?.['required'] &&
-                    !cep?.errors?.['required'] &&
-                    !cidade?.errors?.['required'] &&
-                    !estado?.errors?.['required']" >O campo sigla deve ser preenchido</span>          
-      </div>
-
-      </mat-card>
-
-
-      <mat-card>
-        <div class="telefones">
-        <h2>Telefones</h2>
-        <div>
-          <ng-container formArrayName="telefones" class="telefones">
-            <ng-container *ngFor="let phoneForm of telefones.controls; let i = index">
-              <div class="phone-form-row" [formGroupName]="i">
-                <mat-form-field appearance="fill" class="telefone">
-                  <input matInput formControlName="numero" placeholder="numero telefone">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="tipo">
-                  <mat-select formControlName="tipo" placeholder="tipo telefone">
-                    <mat-option [value]="1">Residencial</mat-option>
-                    <mat-option [value]="2">Celular</mat-option>
-                    <mat-option [value]="3">Contato</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-icon class="delete-btn" (click)="deletePhone(i)">
-                  delete_forever</mat-icon>
+        <!-- Endereço -->
+        <div class="glass-card" formGroupName="Endereco">
+          <h2 class="premium-title section-title">Endereço</h2>
+          <div class="grid-2">
+            <div>
+              <label for="Cep">CEP</label>
+              <input type="text" id="Cep" title="CEP" placeholder="CEP" formControlName="Cep" class="form-input">
+            </div>
+            <div>
+              <label for="Logradouro">Logradouro</label>
+              <input type="text" id="Logradouro" title="Logradouro" placeholder="Logradouro" formControlName="Logradouro" class="form-input">
+            </div>
+            <div>
+              <label for="Numero">Número</label>
+              <input type="text" id="Numero" title="Número" placeholder="Número" formControlName="Numero" class="form-input">
+            </div>
+            <div>
+              <label for="Bairro">Bairro</label>
+              <input type="text" id="Bairro" title="Bairro" placeholder="Bairro" formControlName="Bairro" class="form-input">
+            </div>
+            
+            <div formGroupName="Cidade" class="city-group grid-2" style="grid-column: span 2;">
+              <div>
+                <label>Cidade</label>
+                <input type="text" title="Cidade" placeholder="Cidade" formControlName="Nome" class="form-input">
+              </div>
+              
+              <div formGroupName="Estado" class="grid-2">
+                <div>
+                  <label>Estado</label>
+                  <input type="text" title="Estado" placeholder="São Paulo" formControlName="Nome" class="form-input">
                 </div>
-              </ng-container>
-            </ng-container>
-        </div>
-          <div>
-            <button mat-mini-fab (click)="addPhone()" color="primary">
-              <mat-icon class="add-course-btn">add</mat-icon>
-            </button>
-          </div>
-        </div>
-        <div *ngIf="telefones.length < 1 && formDir.submitted" class="validation-error">
-          <span>É necessario adicionar pelo menos um telefone</span>
-        </div>
-        <div *ngIf="telefones.length > 3 && formDir.submitted" class="validation-error">
-          <span>Não é permitido adicionar mais de 3 telefones a candidato</span>
-        </div>
-      </mat-card>
-
-      <mat-card>
-        <div class="cursos">
-        <h2>Cursos</h2>
-        <div>
-          <ng-container formArrayName="cursos" class="cursos">
-            <ng-container *ngFor="let courseForm of cursos.controls; let i = index">
-              <div class="course-form-row" [formGroupName]="i">
-
-                <mat-form-field appearance="fill" class="curso">
-                  <mat-select formControlName="nome" placeholder="Escolha um curso">
-                    <mat-option value="Java">Java</mat-option>
-                    <mat-option value="Angular">Angular</mat-option>
-                    <mat-option value="C-Sharp">C-Sharp</mat-option>
-                    <mat-option value="React-JS">React-JS</mat-option>
-                    <mat-option value="HTML-&-CSS">HTML-&-CSS</mat-option>
-                    <mat-option value="Desing Pattern">Desing Pattern</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-icon class="delete-btn" (click)="deleteCourse(i)">
-                  delete_forever</mat-icon>
+                <div>
+                  <label>Sigla</label>
+                  <input type="text" title="Sigla" placeholder="SP" formControlName="Sigla" class="form-input">
                 </div>
-              </ng-container>
-            </ng-container>
+              </div>
+            </div>
           </div>
-          <div>
-            <button mat-mini-fab (click)="addCourse()" color="primary">
-              <mat-icon class="add-course-btn">add</mat-icon>
-            </button>
-          </div>
-          </div>
-          <div *ngIf="cursos.length < 1 && formDir.submitted" class="validation-error">
-            <span>É necessario adicionar pelo menos um telefone</span>
-          </div>
-          <div *ngIf="cursos.length > 3 && formDir.submitted" class="validation-error">
-            <span>Não é permitido adicionar mais de 3 Cursos a candidato</span>
-          </div>
-        </mat-card>
-        <button type="submit" mat-raised-button color="primary" (click)="editar()">Confirmar Alterações</button>
+        </div>
 
-    </form>
-    </mat-card-content>
-  </mat-card>
+        <div class="stepper-actions">
+          <button type="button" class="premium-btn secondary" matStepperPrevious>Voltar</button>
+          <button type="button" class="premium-btn" matStepperNext>Próximo</button>
+        </div>
+      </form>
+    </mat-step>
 
+    <!-- Etapa 3: Contatos e Cursos -->
+    <mat-step>
+      <form [formGroup]="meuFormulario" class="candidato-form">
+        <ng-template matStepLabel>Contatos & Formação</ng-template>
+
+        <!-- Telefones -->
+        <div class="glass-card mt-20">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h2 class="premium-title section-title" style="margin: 0;">Contatos (Passo 3 de 6)</h2>
+            <button type="button" class="premium-btn" (click)="addPhone()" style="padding: 8px 16px; font-size: 0.9rem;">+ Adicionar Telefone</button>
+          </div>
+          
+          <div formArrayName="Telefones">
+            <div *ngFor="let tel of telefones.controls; let i=index" [formGroupName]="i" class="form-array-item form-array-grid" style="grid-template-columns: 2fr 1fr auto;">
+              <div>
+                <label>Número</label>
+                <input type="text" formControlName="Numero" placeholder="(11) 99999-9999" class="form-input">
+              </div>
+              <div>
+                <label>Tipo</label>
+                <select formControlName="Tipo" class="form-input">
+                  <option value="1" class="select-option">Fixo</option>
+                  <option value="2" class="select-option">Celular</option>
+                  <option value="3" class="select-option">Comercial</option>
+                </select>
+              </div>
+              <button type="button" class="action-btn danger" (click)="deletePhone(i)" style="height: 48px; border-radius: 8px;"><mat-icon>delete</mat-icon></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formações Acadêmicas -->
+        <div class="glass-card mt-20">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h2 class="premium-title section-title" style="margin: 0;">Formação Acadêmica</h2>
+            <button type="button" class="premium-btn" (click)="addFormacao()" style="padding: 8px 16px; font-size: 0.9rem;">+ Adicionar Formação</button>
+          </div>
+          
+          <div formArrayName="Formacoes">
+            <div *ngFor="let formacao of formacoes.controls; let i=index" [formGroupName]="i" class="form-array-item form-array-grid" style="grid-template-columns: 2fr 2fr 1fr 1fr 1fr auto;">
+              <div>
+                <label>Curso/Formação</label>
+                <input type="text" formControlName="Nome" placeholder="Ex: Ciência da Computação" class="form-input">
+              </div>
+              <div>
+                <label>Instituição</label>
+                <input type="text" formControlName="Instituicao" placeholder="Ex: USP" class="form-input">
+              </div>
+              <div>
+                <label>Status</label>
+                <select formControlName="Status" class="form-input">
+                  <option value="Concluido" class="select-option">Concluído</option>
+                  <option value="Cursando" class="select-option">Cursando</option>
+                  <option value="Trancado" class="select-option">Trancado/Interrompido</option>
+                </select>
+              </div>
+              <div>
+                <label>Data Início</label>
+                <input type="date" formControlName="DataInicio" class="form-input">
+              </div>
+              <div>
+                <label>Data Fim (ou Prev)</label>
+                <input type="date" formControlName="DataFim" class="form-input">
+              </div>
+              <button type="button" class="action-btn danger" (click)="deleteFormacao(i)" style="height: 48px; border-radius: 8px;"><mat-icon>delete</mat-icon></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cursos Complementares -->
+        <div class="glass-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h2 class="premium-title section-title" style="margin: 0;">Cursos Complementares</h2>
+            <button type="button" class="premium-btn" (click)="addCourse()" style="padding: 8px 16px; font-size: 0.9rem;">+ Adicionar Curso</button>
+          </div>
+          
+          <div formArrayName="Cursos">
+            <div *ngFor="let curso of cursos.controls; let i=index" [formGroupName]="i" class="form-array-item form-array-grid" style="grid-template-columns: 2fr 2fr 1fr 1fr auto;">
+              <div>
+                <label>Nome do Curso</label>
+                <input type="text" formControlName="Nome" [matAutocomplete]="autoCurso" placeholder="Ex: Angular Avançado" class="form-input">
+                <mat-autocomplete #autoCurso="matAutocomplete" class="glass-autocomplete">
+                  <mat-option *ngFor="let option of filterCursos(curso.get('Nome')?.value)" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </div>
+              <div>
+                <label>Instituição</label>
+                <input type="text" formControlName="Instituicao" placeholder="Ex: Udemy" class="form-input">
+              </div>
+              <div>
+                <label>Ano Conclusão</label>
+                <input type="number" formControlName="AnoConclusao" placeholder="2025" class="form-input">
+              </div>
+              <div>
+                <label>Total Horas</label>
+                <input type="number" formControlName="TotalHoras" placeholder="40" class="form-input">
+              </div>
+              <button type="button" class="action-btn danger" (click)="deleteCourse(i)" style="height: 48px; border-radius: 8px;"><mat-icon>delete</mat-icon></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepper-actions">
+          <button type="button" class="premium-btn secondary" matStepperPrevious>Voltar</button>
+          <button type="button" class="premium-btn" matStepperNext>Próximo</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Etapa 4: Habilidades -->
+    <mat-step>
+      <form [formGroup]="meuFormulario" class="candidato-form">
+        <ng-template matStepLabel>Habilidades</ng-template>
+
+        <!-- Habilidades -->
+        <div class="glass-card mt-20">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h2 class="premium-title section-title" style="margin: 0;">Hard Skills & Soft Skills (Passo 4 de 6)</h2>
+            <button type="button" class="premium-btn" (click)="addHabilidade()" style="padding: 8px 16px; font-size: 0.9rem;">+ Adicionar</button>
+          </div>
+          
+          <div formArrayName="Habilidades">
+            <div *ngFor="let hab of habilidades.controls; let i=index" [formGroupName]="i" class="form-array-item form-array-grid" style="grid-template-columns: 1fr 2fr 1fr auto;">
+              <div>
+                <label>Tipo</label>
+                <select formControlName="Tipo" class="form-input">
+                  <option value="HardSkill" class="select-option">Hard Skill (Técnica)</option>
+                  <option value="SoftSkill" class="select-option">Soft Skill (Comportamental)</option>
+                </select>
+              </div>
+              <div>
+                <label>Habilidade</label>
+                <input type="text" formControlName="Nome" [matAutocomplete]="autoSkill" placeholder="Ex: Angular, Liderança, etc..." class="form-input">
+                <mat-autocomplete #autoSkill="matAutocomplete" class="glass-autocomplete">
+                  <mat-option *ngFor="let option of filterSkills(hab.get('Nome')?.value, hab.get('Tipo')?.value)" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </div>
+              <div>
+                <label>Nível</label>
+                <select formControlName="Nivel" class="form-input">
+                  <option value="Basico" class="select-option">Básico</option>
+                  <option value="Intermediario" class="select-option">Intermediário</option>
+                  <option value="Avancado" class="select-option">Avançado</option>
+                </select>
+              </div>
+              <button type="button" class="action-btn danger" (click)="deleteHabilidade(i)" style="height: 48px; border-radius: 8px;"><mat-icon>delete</mat-icon></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepper-actions">
+          <button type="button" class="premium-btn secondary" matStepperPrevious>Voltar</button>
+          <button type="button" class="premium-btn" matStepperNext>Próximo</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Etapa 5: Experiências -->
+    <mat-step>
+      <form [formGroup]="meuFormulario" class="candidato-form">
+        <ng-template matStepLabel>Experiência</ng-template>
+
+        <!-- Experiências -->
+        <div class="glass-card mt-20">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h2 class="premium-title section-title" style="margin: 0;">Experiência Profissional (Passo 5 de 6)</h2>
+            <button type="button" class="premium-btn" (click)="addExperiencia()" style="padding: 8px 16px; font-size: 0.9rem;">+ Adicionar Experiência</button>
+          </div>
+          
+          <div formArrayName="Experiencias">
+            <div *ngFor="let exp of experiencias.controls; let i=index" [formGroupName]="i" class="form-array-item grid-2" style="margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+              
+              <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end;">
+                 <button type="button" class="action-btn danger" (click)="deleteExperiencia(i)" style="height: 36px; padding: 0 16px; border-radius: 8px;">Remover Experiência</button>
+              </div>
+
+              <div>
+                <label>Empresa</label>
+                <input type="text" formControlName="Empresa" placeholder="Nome da empresa" class="form-input">
+              </div>
+              <div>
+                <label>Cargo</label>
+                <input type="text" formControlName="Cargo" placeholder="Ex: Desenvolvedor Pleno" class="form-input">
+              </div>
+              <div>
+                <label>Data de Início</label>
+                <input type="date" formControlName="DataInicio" class="form-input">
+              </div>
+              <div>
+                <label>Data de Fim (deixe vazio se atual)</label>
+                <input type="date" formControlName="DataFim" class="form-input">
+              </div>
+              <div style="grid-column: span 2;">
+                <label>Descrição das Atividades</label>
+                <textarea formControlName="Descricao" placeholder="Descreva suas principais atividades e conquistas..." class="form-input" style="min-height: 80px; resize: vertical;"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepper-actions">
+          <button type="button" class="premium-btn secondary" matStepperPrevious>Voltar</button>
+          <button type="button" class="premium-btn" matStepperNext>Próximo</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Etapa 6: Revisão e Envio -->
+    <mat-step>
+      <ng-template matStepLabel>Concluir</ng-template>
+      <div class="glass-card mt-20" style="text-align: center; padding: 40px 20px;">
+        <mat-icon style="font-size: 64px; height: 64px; width: 64px; color: var(--accent-color); margin-bottom: 20px;">check_circle_outline</mat-icon>
+        <h2 class="premium-title">Tudo Pronto! (Passo 6 de 6)</h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Revise seus dados se necessário e clique em salvar para registrar o currículo no sistema.</p>
+        
+        <div class="stepper-actions" style="justify-content: center; gap: 20px;">
+          <button type="button" class="premium-btn secondary" matStepperPrevious>Voltar e Revisar</button>
+          <button type="button" class="premium-btn" (click)="enviarFormulario()" [disabled]="meuFormulario.invalid">Salvar Alterações</button>
+        </div>
+        <div *ngIf="meuFormulario.invalid" style="color: var(--secondary-color); margin-top: 20px; font-size: 0.9rem;">
+          Existem campos obrigatórios não preenchidos ou inválidos.
+        </div>
+      </div>
+    </mat-step>
+
+  </mat-stepper>
+</div>
