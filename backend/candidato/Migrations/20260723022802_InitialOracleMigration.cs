@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -90,7 +90,7 @@ namespace candidato.Migrations
                     RequisitosObrigatorios = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
                     RequisitosDesejaveis = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
                     Salario = table.Column<decimal>(type: "DECIMAL(18, 2)", nullable: false),
-                    StatusAberta = table.Column<bool>(type: "BOOLEAN", nullable: false),
+                    StatusAberta = table.Column<bool>(type: "NUMBER(1)", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false),
                     CriadoPorId = table.Column<long>(type: "NUMBER(19)", nullable: false)
                 },

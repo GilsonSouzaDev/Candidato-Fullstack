@@ -35,7 +35,7 @@ builder.Services.AddCors(options =>
 
 var connectionString = builder.Configuration.GetConnectionString("OracleConnection");
 builder.Services.AddDbContext<CandidatoContext>(opts => {
-    opts.UseOracle(connectionString);
+    opts.UseOracle(connectionString, b => b.UseOracleSQLCompatibility(OracleSQLCompatibility.DatabaseVersion19));
 });
 
 
