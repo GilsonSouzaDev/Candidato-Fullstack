@@ -57,6 +57,7 @@ jobs:
         run: |
           cd frontend/candidato
           npm run build -- --configuration=production --base-href=/Candidato-Fullstack/
+          cp dist/candidato/index.html dist/candidato/404.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
