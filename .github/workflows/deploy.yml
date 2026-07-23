@@ -90,7 +90,7 @@ jobs:
                 environment:
                   - ASPNETCORE_ENVIRONMENT=Production
                   - DatabaseProvider=Oracle
-                  - ConnectionStrings__OracleConnection=User Id=CANDIDATO_USER;Password=${{ secrets.ORACLE_PASSWORD }};Data Source=nomedobanco_low;
+                  - ConnectionStrings__OracleConnection=User Id=CANDIDATO_USER;Password=${{ secrets.ORACLE_PASSWORD }};Data Source=livrariadb_low;
                 volumes:
                   - /opt/candidato-fullstack/Wallet:/app/Wallet
                   - /opt/candidato-fullstack/uploads:/app/wwwroot/uploads
