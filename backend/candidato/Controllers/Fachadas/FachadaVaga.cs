@@ -29,17 +29,11 @@ namespace candidato.Controllers.Fachadas
 
         public async Task<Vaga> CriarVaga(Vaga dto, long userId)
         {
-            var vaga = new Vaga
-            {
-                Titulo = dto.Titulo,
-                Descricao = dto.Descricao,
-                Requisitos = dto.Requisitos,
-                Salario = dto.Salario,
-                StatusAberta = true,
-                CriadoPorId = userId
-            };
+            dto.CriadoPorId = userId;
+            dto.StatusAberta = true;
+            dto.DataCriacao = DateTime.UtcNow;
 
-            return await _vagaDao.Adicionar(vaga);
+            return await _vagaDao.Adicionar(dto);
         }
 
         public async Task<bool> RemoverVaga(long id, long userId)

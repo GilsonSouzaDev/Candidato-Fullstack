@@ -126,9 +126,10 @@ using (var scope = app.Services.CreateScope())
         db.SaveChanges();
     }
 
-    if (!db.Usuarios.Any(u => u.Role == "Recrutador"))
+    var recrutador = db.Usuarios.FirstOrDefault(u => u.Role == "Recrutador");
+    if (recrutador == null)
     {
-        var recrutador = new Usuario
+        recrutador = new Usuario
         {
             Nome = "Recrutador Seed",
             Email = "recrutador@sistema.com",
@@ -137,7 +138,10 @@ using (var scope = app.Services.CreateScope())
         };
         db.Usuarios.Add(recrutador);
         db.SaveChanges();
+    }
 
+    if (!db.Vagas.Any())
+    {
         db.Vagas.Add(new Vaga
         {
             Titulo = "Desenvolvedor Full Stack Angular + .NET",
