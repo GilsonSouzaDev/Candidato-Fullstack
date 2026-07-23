@@ -98,9 +98,9 @@ jobs:
                 ports:
                   - "8082:8080"
                 networks:
-                  - web-network
+                  - portfolio_portfolio-net
             networks:
-              web-network:
+              portfolio_portfolio-net:
                 external: true
             EOF
             docker compose pull backend
