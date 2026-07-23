@@ -1,0 +1,51 @@
+{
+  "id"  : 1,
+  "nome": "João da Silva",
+  "filiacaoId": 1,
+  "filiacao": {
+    "id": 1,
+    "nomePai": "José da Silva",
+    "nomeMae": "Maria da Silva"
+  },
+  "enderecoId": 1,
+  "endereco": {
+    "id": 1,
+    "logradouro": "Rua Principal",
+    "cep": "12345-678",
+    "numero": "123",
+    "cidade": {
+      "id": 1,
+      "nome": "Cidade Exemplo",
+      "estado": {
+        "id": 1,
+        "nome": "Estado Exemplo",
+        "sigla": "EE"
+      },
+      "estadoId": 1
+    },
+    "cidadeId": 1
+  },
+  "telefones": [
+    {
+      "numero": "123456789",
+      "tipo": "celular"
+    },
+    {
+      "numero": "987654321",
+      "tipo": "residencial"
+    }
+  ],
+  "cursos": [
+    {
+      "nome": "Curso 1",
+      "instituicao": "Instituição A",
+      "anoConclusao": 2022
+    },
+    {
+      "nome": "Curso 2",
+      "instituicao": "Instituição B",
+      "anoConclusao": 2023
+    }
+  ]
+}
+
