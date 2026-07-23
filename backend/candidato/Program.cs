@@ -91,6 +91,8 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+app.UseCors(MyAllowSpecificOrigins);
+
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 // Configure the HTTP request pipeline.
@@ -101,8 +103,6 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
-
-app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthentication();
 app.UseAuthorization();
