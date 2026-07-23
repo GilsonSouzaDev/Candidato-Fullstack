@@ -6,12 +6,14 @@ import { Observable  } from 'rxjs';
 import { Candidato } from '../models/Candidato';
 
 
+import { environment } from '../../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class CandidatosService {
 
-  private readonly API = '/api/candidato';
+  private readonly API = environment.apiUrl + '/candidato';
   http: any;
 
   constructor( private httpClient: HttpClient) { }

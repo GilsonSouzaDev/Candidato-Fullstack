@@ -33,9 +33,9 @@ builder.Services.AddCors(options =>
 //Definindo o acesso ao Banco de dados
 
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("OracleConnection");
 builder.Services.AddDbContext<CandidatoContext>(opts => {
-    opts.UseSqlite("Data Source=temp-ats.db");
+    opts.UseOracle(connectionString);
 });
 
 

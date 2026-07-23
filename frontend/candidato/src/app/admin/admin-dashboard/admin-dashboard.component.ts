@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../core/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -12,17 +13,21 @@ import { AuthService } from '../../core/auth.service';
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss']
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit {
   nome = '';
   email = '';
   senha = '';
   msg = '';
   isError = false;
+  isSaving = false;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
+  ngOnInit(): void {
+  }
+
   onSubmit() {
-    this.http.post('/api/admin/recrutadores', {
+    this.http.post(environment.apiUrl + '/admin/recrutadores', {
       nome: this.nome,
       email: this.email,
       senha: this.senha
